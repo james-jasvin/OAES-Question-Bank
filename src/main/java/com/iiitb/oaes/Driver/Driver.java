@@ -27,7 +27,7 @@ public class Driver {
             System.out.print(exception.getLocalizedMessage());
         }
     }
-    public static void initializeDatabase() {
+    public static void initializeAuthorDatabase() {
 
         AuthorsImpl authorsDao = new AuthorsImpl();
 
@@ -58,6 +58,10 @@ public class Driver {
         System.out.println("\nTesting Login with Correct Password");
         System.out.println(authorsDao.loginAuthor("alice_bob","Alice@123") == null? "Login failed": "Login successful");
 
+
+    }
+
+    public static void initializeItemDatabase(){
         // Adding Items
         System.out.println("-------------------------------------------\nUse Case 1: Adding Items\n-------------------------------------------");
         ItemsImpl itemsDao = new ItemsImpl();
@@ -110,9 +114,9 @@ public class Driver {
         System.out.println(itemsDao.updateItem(item, loginId, password)? "Update failed": "Update successful");
         System.out.println("Finished Updating Item 2\n");
     }
-
     public static void main(String[] args) {
         clearDatabase();
-        initializeDatabase();
+        initializeAuthorDatabase();
+        initializeItemDatabase();
     }
 }
