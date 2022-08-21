@@ -100,10 +100,10 @@ public class Driver {
         System.out.println("Finished Updating Item 1\n");
 
         // Updating Item with 3 parameters
-        item = new Items(2);
-        item.setOption2("Observer Pattern");
-        item.setOption4("Abstract Factory Pattern");
-        item.setAnswer(4);
+        item = new Items(1);
+        item.setOption4("Observer Pattern");
+        item.setOption2("Abstract Factory Pattern");
+        item.setAnswer(2);
         itemsDao.updateItem(item);
         System.out.println("Finished Updating Item 2\n");
     }
