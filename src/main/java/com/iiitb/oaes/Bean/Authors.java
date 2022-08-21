@@ -20,6 +20,9 @@ public class Authors implements Serializable {
     @Column(nullable = false)
     private String password;
 
+    @OneToMany(mappedBy="author")
+    private List<Items> items;
+
     public Authors() {
     }
 
@@ -27,6 +30,10 @@ public class Authors implements Serializable {
         this.name = name;
         this.loginId = loginId;
         this.password = password;
+    }
+
+    public Integer getAuthorId() {
+        return authorId;
     }
 
     public String getName() {
@@ -51,6 +58,15 @@ public class Authors implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @JsonbTransient
+    public List<Items> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Items> items) {
+        this.items = items;
     }
 
     @Override

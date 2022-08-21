@@ -37,6 +37,10 @@ public class Items implements Serializable {
     @Column(nullable = false)
     private Integer answer;
 
+    @ManyToOne
+    @JoinColumn(name="authorId", nullable=false)
+    private Authors author;
+
     public Items() {
 
     }
@@ -121,6 +125,14 @@ public class Items implements Serializable {
 
     public void setItemId(Integer itemId) {
         this.itemId = itemId;
+    }
+
+    public Authors getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Authors author) {
+        this.author = author;
     }
 
     //    public Integer getQuestionId() {

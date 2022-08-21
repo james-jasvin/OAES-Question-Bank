@@ -1,5 +1,6 @@
 package com.iiitb.oaes.DAO.Implementation;
 
+import com.iiitb.oaes.Bean.Authors;
 import com.iiitb.oaes.Bean.Items;
 import com.iiitb.oaes.DAO.ItemsDao;
 import com.iiitb.oaes.utils.SessionUtil;
@@ -14,9 +15,17 @@ import java.util.List;
 public class ItemsImpl implements ItemsDao {
 
     @Override
-    public boolean createItem(Items item) {
+    public boolean createItem(Items item, String loginId, String password) {
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
+
+            AuthorsImpl authorImpl = new AuthorsImpl();
+
+            Authors author = authorImpl.loginAuthor(loginId, password);
+            if (author == null)
+                return false;
+
+            item.setAuthor(author);
             session.save(item);
             transaction.commit();
             return true;
@@ -27,51 +36,71 @@ public class ItemsImpl implements ItemsDao {
     }
 
     @Override
-    public List<Items> getItems() {
+    public List<Items> getItems(String loginId, String password) {
         Session session = SessionUtil.getSession();
         List<Items> items = new ArrayList<>();
+
         try {
-            for (final Object item : session.createQuery("from Items").list()) {
+            AuthorsImpl authorImpl = new AuthorsImpl();
+
+            Authors author = authorImpl.loginAuthor(loginId, password);
+            if (author == null)
+                return new ArrayList<>();
+
+            Query query = session.createQuery("from Items where author=:authorId");
+            query.setParameter("authorId", author);
+
+            for (final Object item : query.list()) {
                 items.add((Items) item);
             }
+            return items;
         } catch (HibernateException exception) {
             System.out.print(exception.getLocalizedMessage());
+            return new ArrayList<>();
         }
-        return items;
     }
 
     @Override
-    public boolean updateItem(Items item) {
+    public boolean updateItem(Items item, String loginId, String password) {
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
-            Query query = session.createQuery("from Items where itemId=:itemId");
+
+            AuthorsImpl authorImpl = new AuthorsImpl();
+
+            Authors author = authorImpl.loginAuthor(loginId, password);
+            if (author == null)
+                return false;
+
+            Query query = session.createQuery("from Items where itemId=:itemId and author=:author");
             query.setParameter("itemId", item.getItemId());
+            query.setParameter("author", author);
 
-            for (final Object fetch: query.list())
-            {
-                Items newObject = (Items) fetch;
+            if (query.list().size() == 0)
+                return false;
 
-                if (item.getQuestion() != null)
-                    newObject.setQuestion(item.getQuestion());
+            Items newObject = (Items) query.list().get(0);
 
-                if (item.getOption1() != null)
-                    newObject.setOption1(item.getOption1());
+            if (item.getQuestion() != null)
+                newObject.setQuestion(item.getQuestion());
 
-                if (item.getOption2() != null)
-                    newObject.setOption2(item.getOption2());
+            if (item.getOption1() != null)
+                newObject.setOption1(item.getOption1());
 
-                if (item.getOption3() != null)
-                    newObject.setOption3(item.getOption3());
+            if (item.getOption2() != null)
+                newObject.setOption2(item.getOption2());
 
-                if (item.getOption4() != null)
-                    newObject.setOption4(item.getOption4());
+            if (item.getOption3() != null)
+                newObject.setOption3(item.getOption3());
 
-                if (item.getAnswer() != null)
-                    newObject.setAnswer(item.getAnswer());
+            if (item.getOption4() != null)
+                newObject.setOption4(item.getOption4());
 
-                session.update(newObject);
-            }
+            if (item.getAnswer() != null)
+                newObject.setAnswer(item.getAnswer());
+
+            session.update(newObject);
             transaction.commit();
+
             return true;
         } catch (HibernateException exception) {
             System.out.print(exception.getLocalizedMessage());

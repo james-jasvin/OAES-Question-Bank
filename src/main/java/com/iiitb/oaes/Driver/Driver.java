@@ -69,7 +69,8 @@ public class Driver {
                 "Transfer Object Pattern",
                 2
         );
-        itemsDao.createItem(item);
+        String loginId = "john_white", password = "John@123";
+        itemsDao.createItem(item, loginId, password);
         System.out.println("Added Item 1\n");
 
         item = new Items("Which of the below is not a valid classification of design pattern",
@@ -79,32 +80,34 @@ public class Driver {
                 "J2EE patterns",
                 4
         );
-        itemsDao.createItem(item);
+        loginId = "alice_bob"; password = "Alice@123";
+        itemsDao.createItem(item, loginId, password);
         System.out.println("Added Item 2");
 
         // Displaying items
         System.out.println("-------------------------------------------\nUse Case 2: Displaying Items\n-------------------------------------------");
-        List<Items> savedItems = itemsDao.getItems();
+        List<Items> savedItems = itemsDao.getItems(loginId, password);
 
         for (Items i: savedItems)
             System.out.println(i);
 
-        // Updating Item with 2 parameters
+        // Updating Item with 2 parameters with invalid login credentials, update fails
         System.out.println("-------------------------------------------\nUse Case 3: Updating Item\n-------------------------------------------");
         item = new Items(2);
         item.setQuestion("Which of the below is a valid classification of design pattern");
         item.setOption2("Model-View-Controller");
         item.setOption3("Abstract Interface");
         item.setAnswer(1);
-        itemsDao.updateItem(item);
+        itemsDao.updateItem(item, loginId, password);
+        System.out.println(itemsDao.updateItem(item, loginId, password)? "Update failed": "Update successful");
         System.out.println("Finished Updating Item 1\n");
 
-        // Updating Item with 3 parameters
+        // Updating Item with 3 parameters and correct login credentials, update successful
         item = new Items(1);
         item.setOption4("Observer Pattern");
         item.setOption2("Abstract Factory Pattern");
         item.setAnswer(2);
-        itemsDao.updateItem(item);
+        System.out.println(itemsDao.updateItem(item, loginId, password)? "Update failed": "Update successful");
         System.out.println("Finished Updating Item 2\n");
     }
 
