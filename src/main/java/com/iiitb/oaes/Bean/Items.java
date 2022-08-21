@@ -1,15 +1,23 @@
 package com.iiitb.oaes.Bean;
 
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 public class Items implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer itemId;
+
+//    @Column(nullable = false)
+//    private Integer questionId;
+
+//    @Column(nullable = false)
+//    private Integer version;
+
+    // How many exams are using this question and evaluation of exam isn't finished
+//    @Column(nullable = false)
+//    private Integer usedCounter;
 
     @Column(unique = true, nullable = false)
     private String question;
@@ -27,6 +35,11 @@ public class Items implements Serializable {
     private Integer answer;
 
     public Items() {
+
+    }
+
+    public Items(Integer itemId) {
+        this.itemId = itemId;
     }
 
     public Items(String question, String option1, String option2, String option3, String option4, Integer answer) {
@@ -37,6 +50,19 @@ public class Items implements Serializable {
         this.option4 = option4;
         this.answer = answer;
     }
+
+
+
+    //    public Items(Integer version, Integer usedCounter, String question, String option1, String option2, String option3, String option4, Integer answer) {
+//        this.version = version;
+//        this.usedCounter = usedCounter;
+//        this.question = question;
+//        this.option1 = option1;
+//        this.option2 = option2;
+//        this.option3 = option3;
+//        this.option4 = option4;
+//        this.answer = answer;
+//    }
 
     public String getQuestion() {
         return question;
@@ -84,5 +110,49 @@ public class Items implements Serializable {
 
     public void setAnswer(Integer answer) {
         this.answer = answer;
+    }
+
+    public Integer getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
+    }
+
+    //    public Integer getQuestionId() {
+//        return questionId;
+//    }
+//
+//    public void setQuestionId(Integer questionId) {
+//        this.questionId = questionId;
+//    }
+//
+//    public Integer getVersion() {
+//        return version;
+//    }
+//
+//    public void setVersion(Integer version) {
+//        this.version = version;
+//    }
+//
+//    public Integer getUsedCounter() {
+//        return usedCounter;
+//    }
+//
+//    public void setUsedCounter(Integer usedCounter) {
+//        this.usedCounter = usedCounter;
+//    }
+
+    @Override
+    public String toString() {
+        return "Items{" +
+                "question='" + question + '\'' +
+                ", option1='" + option1 + '\'' +
+                ", option2='" + option2 + '\'' +
+                ", option3='" + option3 + '\'' +
+                ", option4='" + option4 + '\'' +
+                ", answer=" + answer +
+                '}';
     }
 }

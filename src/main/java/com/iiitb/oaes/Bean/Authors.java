@@ -20,7 +20,6 @@ public class Authors implements Serializable {
     @Column(nullable = false)
     private String password;
 
-
     public Authors() {
     }
 
@@ -52,5 +51,15 @@ public class Authors implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "Authors{" +
+                "authorId=" + authorId +
+                ", name='" + name + '\'' +
+                ", loginId='" + loginId + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
