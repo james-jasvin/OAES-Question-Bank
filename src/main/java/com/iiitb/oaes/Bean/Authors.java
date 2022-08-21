@@ -8,7 +8,8 @@ import java.util.List;
 @Entity
 public class Authors implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "hibernate_seq", sequenceName = "hibernate_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hibernate_seq")
     private Integer authorId;
 
     @Column(nullable = false)

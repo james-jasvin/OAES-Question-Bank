@@ -1,12 +1,16 @@
 package com.iiitb.oaes.Bean;
 
+import org.hibernate.annotations.Check;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Check(constraints = "answer BETWEEN 1 AND 4")
 public class Items implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "hibernate_seq", sequenceName = "hibernate_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hibernate_seq")
     private Integer itemId;
 
 //    @Column(nullable = false)
