@@ -10,7 +10,7 @@
         <property name="connection.password">password</property>
 
         <!-- DB schema will be updated if needed -->
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
         <property name="show_sql">true</property>
         <mapping class="com.iiitb.oaes.Bean.Authors" />
         <mapping class="com.iiitb.oaes.Bean.Items" />

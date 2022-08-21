@@ -9,8 +9,7 @@ import java.io.Serializable;
 @Check(constraints = "answer BETWEEN 1 AND 4")
 public class Items implements Serializable {
     @Id
-    @SequenceGenerator(name = "hibernate_seq", sequenceName = "hibernate_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hibernate_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer itemId;
 
 //    @Column(nullable = false)
@@ -150,13 +149,11 @@ public class Items implements Serializable {
 
     @Override
     public String toString() {
-        return "Items{" +
-                "question='" + question + '\'' +
-                ", option1='" + option1 + '\'' +
-                ", option2='" + option2 + '\'' +
-                ", option3='" + option3 + '\'' +
-                ", option4='" + option4 + '\'' +
-                ", answer=" + answer +
-                '}';
+        return "Question:" + question + '\n' +
+                "Option 1:" + option1 + '\n' +
+                "Option 2:" + option2 + '\n' +
+                "Option 3:" + option3 + '\n' +
+                "Option 4:" + option4 + '\n' +
+                "Correct Option:" + answer + "\n";
     }
 }

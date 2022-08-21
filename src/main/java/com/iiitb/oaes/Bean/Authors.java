@@ -8,8 +8,7 @@ import java.util.List;
 @Entity
 public class Authors implements Serializable {
     @Id
-    @SequenceGenerator(name = "hibernate_seq", sequenceName = "hibernate_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hibernate_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer authorId;
 
     @Column(nullable = false)
@@ -56,11 +55,10 @@ public class Authors implements Serializable {
 
     @Override
     public String toString() {
-        return "Authors{" +
-                "authorId=" + authorId +
-                ", name='" + name + '\'' +
-                ", loginId='" + loginId + '\'' +
-                ", password='" + password + '\'' +
+        return "Authors {" +
+                "authorId:" + authorId +
+                ", name:" + name +
+                ", loginId:" + loginId +
                 '}';
     }
 }
