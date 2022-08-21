@@ -1,0 +1,56 @@
+package com.iiitb.oaes.Bean;
+
+import javax.json.bind.annotation.JsonbTransient;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
+
+@Entity
+public class Authors implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer authorId;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(unique = true, nullable = false)
+    private String loginId;
+
+    @Column(nullable = false)
+    private String password;
+
+
+    public Authors() {
+    }
+
+    public Authors(String name, String loginId, String password) {
+        this.name = name;
+        this.loginId = loginId;
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(String loginId) {
+        this.loginId = loginId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+}
