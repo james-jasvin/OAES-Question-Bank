@@ -10,7 +10,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.awt.*;
 import java.util.List;
+import java.util.Scanner;
 
 public class Driver {
     public static void clearDatabase() {
@@ -50,13 +52,13 @@ public class Driver {
 
         // Login author
         // Wrong password
-        System.out.println("-------------------------------------------\nLogin\n-------------------------------------------");
-        System.out.println("Testing Login with Wrong Password");
-        System.out.println(authorsDao.loginAuthor("john_white","Alice@123") == null? "Login failed": "Login successful");
-
-        // Correct password
-        System.out.println("\nTesting Login with Correct Password");
-        System.out.println(authorsDao.loginAuthor("alice_bob","Alice@123") == null? "Login failed": "Login successful");
+//        System.out.println("-------------------------------------------\nLogin\n-------------------------------------------");
+//        System.out.println("Testing Login with Wrong Password");
+//        System.out.println(authorsDao.loginAuthor("john_white","Alice@123") == null? "Login failed": "Login successful");
+//
+//        // Correct password
+//        System.out.println("\nTesting Login with Correct Password");
+//        System.out.println(authorsDao.loginAuthor("alice_bob","Alice@123") == null? "Login failed": "Login successful");
 
 
     }
@@ -117,6 +119,150 @@ public class Driver {
     public static void main(String[] args) {
         clearDatabase();
         initializeAuthorDatabase();
-        initializeItemDatabase();
+//        initializeItemDatabase();
+        Scanner sc = new Scanner(System.in);
+        int choice = -1;
+
+        AuthorsImpl authorsDao = new AuthorsImpl();
+        String loginId,password;
+
+        while(true){
+            System.out.println("Enter Login-ID and Password :-");
+            loginId = sc.nextLine();
+            password = sc.nextLine();
+
+            Authors author = authorsDao.loginAuthor(loginId,password);
+
+            // Login Author
+            System.out.println("-------------------------------------------\nLogin\n-------------------------------------------");
+            if(author != null){
+                System.out.println("Login Successful");
+                break;
+            }else{
+                System.out.println("Login-Id or Password is Wrong");
+            }
+        }
+
+        while(choice != 4){
+            // Save logged in author object as Driver class member and use it to pass in authorization parameters for later operations
+
+            System.out.println("Select operation from below options\n 1. Add Items\n 2. Show Items\n 3. Update Items\n 4. Exit");
+            choice = sc.nextInt();
+            sc.nextLine();
+
+            ItemsImpl itemsDao = new ItemsImpl();
+            Integer ques_choice = 1;
+            String ques,opt1,opt2,opt3,opt4;
+            Integer ans;
+
+            switch (choice){
+                case 1:
+
+                    // Add Item
+                    // Ask for parameters
+                    while(ques_choice == 1) {
+                        System.out.println("-------------------------------------------\nAdding Items\n-------------------------------------------");
+
+                        System.out.println("Enter Question :-");
+                        ques = sc.nextLine();
+
+                        System.out.println("Enter Option 1 :-");
+                        opt1 = sc.nextLine();
+
+                        System.out.println("Enter Option 2 :-");
+                        opt2 = sc.nextLine();
+
+                        System.out.println("Enter Option 3 :-");
+                        opt3 = sc.nextLine();
+
+                        System.out.println("Enter Option 4 :-");
+                        opt4 = sc.nextLine();
+
+                        System.out.println("Enter Answer :-");
+                        ans = sc.nextInt();
+
+                        Items item = new Items(ques, opt1, opt2, opt3, opt4, ans);
+                        boolean isItemAdded = itemsDao.createItem(item, loginId, password);
+                        if (isItemAdded)
+                            System.out.println("Item Added Successfully\n");
+                        else
+                            System.out.println("Item is not added !\n");
+
+                        System.out.println("Want to add questions ?\n 1. YES\n 2. NO");
+                        ques_choice = sc.nextInt();
+                        sc.nextLine();
+                    }
+                    break;
+
+                case 2:
+                    // Get Items
+                    // Show list of items
+
+                    System.out.println("-------------------------------------------\nDisplaying Items\n-------------------------------------------");
+                    List<Items> savedItems = itemsDao.getItems(loginId, password);
+                    for (Items i: savedItems)
+                        System.out.println(i);
+                    break;
+
+                case 3:
+                    // Enter updated question
+                    // Updated options
+                    // Updated correct answer
+
+                    // Show Current Items
+                    System.out.println("-------------------------------------------\nDisplaying Items\n-------------------------------------------");
+                    savedItems = itemsDao.getItems(loginId, password);
+                    for (Items i: savedItems)
+                        System.out.println(i);
+
+                    System.out.println("-------------------------------------------\nUpdating Item\n-------------------------------------------");
+                    System.out.println("Enter -1 to not update that parameter");
+                    System.out.println("Enter Question id to update");
+                    Integer qid = sc.nextInt();
+                    Items item = new Items(qid);
+                    sc.nextLine();
+
+                    System.out.println("Enter New Question");
+                    ques = sc.nextLine();
+                    if(!ques.equals("-1"))
+                        item.setQuestion(ques);
+
+                    System.out.println("Enter Option 1");
+                    opt1 = sc.nextLine();
+                    if(!opt1.equals("-1"))
+                    item.setOption1(opt1);
+
+                    System.out.println("Enter Option 2");
+                    opt2 = sc.nextLine();
+                    if(!opt2.equals("-1"))
+                        item.setOption2(opt2);
+
+                    System.out.println("Enter Option 3");
+                    opt3 = sc.nextLine();
+                    if(!opt3.equals("-1"))
+                        item.setOption3(opt3);
+
+                    System.out.println("Enter Option 4");
+                    opt4 = sc.nextLine();
+                    if(!opt4.equals("-1"))
+                        item.setOption4(opt4);
+
+                    System.out.println("Enter New Answer");
+                    ans = sc.nextInt();
+                    if(!ans.equals(-1))
+                        item.setAnswer(ans);
+                    sc.nextLine();
+
+                    itemsDao.updateItem(item, loginId, password);
+                    System.out.println(itemsDao.updateItem(item, loginId, password)? "Update Successful": "Update failed");
+                    System.out.println("Finished Updating Item " + qid + "\n");
+                    break;
+                case 4:
+                    System.out.println("\n\n-------------------------------------------THANK YOU-------------------------------------------\n\n");
+                    break;
+                default:
+                    System.out.println("Enter Valid Choice");
+            }
+        }
     }
 }
