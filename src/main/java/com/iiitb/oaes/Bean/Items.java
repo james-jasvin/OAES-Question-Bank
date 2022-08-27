@@ -171,12 +171,13 @@ public class Items implements Serializable {
 
     @Override
     public String toString() {
-        return "Question:" + question + '\n' +
+        return "\nQuestion ID:" + itemId + '\n' +
+                "Question:" + question + '\n' +
                 "Option 1:" + option1 + '\n' +
                 "Option 2:" + option2 + '\n' +
                 "Option 3:" + option3 + '\n' +
                 "Option 4:" + option4 + '\n' +
                 "Correct Option:" + answer + '\n' +
-                "Course:" + course.toString();
+                course.toString() + '\n';
     }
 }

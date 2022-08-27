@@ -55,10 +55,10 @@ public class Course implements Serializable {
 
     @Override
     public String toString() {
-        return "Course {" +
-                "courseId:" + courseId +
-                ", name:" + name +
-                ", abbreviation:" + abbreviation +
-                '}';
+        return "Course { " +
+                "Id:" + courseId +
+                ", Name:" + name +
+                ", Abbreviation:" + abbreviation +
+                " }";
     }
 }
