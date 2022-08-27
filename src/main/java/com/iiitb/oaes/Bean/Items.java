@@ -38,6 +38,10 @@ public class Items implements Serializable {
     private Integer answer;
 
     @ManyToOne
+    @JoinColumn(name="courseId", nullable=false)
+    private Course course;
+
+    @ManyToOne
     @JoinColumn(name="authorId", nullable=false)
     private Authors author;
 
@@ -57,8 +61,6 @@ public class Items implements Serializable {
         this.option4 = option4;
         this.answer = answer;
     }
-
-
 
     //    public Items(Integer version, Integer usedCounter, String question, String option1, String option2, String option3, String option4, Integer answer) {
 //        this.version = version;
@@ -135,6 +137,14 @@ public class Items implements Serializable {
         this.author = author;
     }
 
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
     //    public Integer getQuestionId() {
 //        return questionId;
 //    }
@@ -166,6 +176,7 @@ public class Items implements Serializable {
                 "Option 2:" + option2 + '\n' +
                 "Option 3:" + option3 + '\n' +
                 "Option 4:" + option4 + '\n' +
-                "Correct Option:" + answer + "\n";
+                "Correct Option:" + answer + '\n' +
+                "Course:" + course.toString();
     }
 }

@@ -14,5 +14,6 @@
         <property name="show_sql">true</property>
         <mapping class="com.iiitb.oaes.Bean.Authors" />
         <mapping class="com.iiitb.oaes.Bean.Items" />
+        <mapping class="com.iiitb.oaes.Bean.Course" />
     </session-factory>
 </hibernate-configuration>

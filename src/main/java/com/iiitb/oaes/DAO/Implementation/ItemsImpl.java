@@ -1,7 +1,10 @@
 package com.iiitb.oaes.DAO.Implementation;
 
 import com.iiitb.oaes.Bean.Authors;
+import com.iiitb.oaes.Bean.Course;
 import com.iiitb.oaes.Bean.Items;
+import com.iiitb.oaes.DAO.AuthorsDao;
+import com.iiitb.oaes.DAO.CourseDao;
 import com.iiitb.oaes.DAO.ItemsDao;
 import com.iiitb.oaes.utils.SessionUtil;
 import org.hibernate.HibernateException;
@@ -15,17 +18,22 @@ import java.util.List;
 public class ItemsImpl implements ItemsDao {
 
     @Override
-    public boolean createItem(Items item, String loginId, String password) {
+    public boolean createItem(Items item, String loginId, String password, Integer courseId) {
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
 
-            AuthorsImpl authorImpl = new AuthorsImpl();
+            AuthorsDao authorImpl = new AuthorsImpl();
+            CourseDao courseImpl = new CourseImpl();
 
             Authors author = authorImpl.loginAuthor(loginId, password);
+
             if (author == null)
                 return false;
 
+            Course course = courseImpl.getCourseById(courseId);
             item.setAuthor(author);
+            item.setCourse(course);
+
             session.save(item);
             transaction.commit();
             return true;
@@ -41,7 +49,7 @@ public class ItemsImpl implements ItemsDao {
         List<Items> items = new ArrayList<>();
 
         try {
-            AuthorsImpl authorImpl = new AuthorsImpl();
+            AuthorsDao authorImpl = new AuthorsImpl();
 
             Authors author = authorImpl.loginAuthor(loginId, password);
             if (author == null)
@@ -65,7 +73,7 @@ public class ItemsImpl implements ItemsDao {
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
 
-            AuthorsImpl authorImpl = new AuthorsImpl();
+            AuthorsDao authorImpl = new AuthorsImpl();
 
             Authors author = authorImpl.loginAuthor(loginId, password);
             if (author == null)

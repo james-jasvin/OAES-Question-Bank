@@ -1,8 +1,10 @@
 package com.iiitb.oaes.Driver;
 
 import com.iiitb.oaes.Bean.Authors;
+import com.iiitb.oaes.Bean.Course;
 import com.iiitb.oaes.Bean.Items;
 import com.iiitb.oaes.DAO.Implementation.AuthorsImpl;
+import com.iiitb.oaes.DAO.Implementation.CourseImpl;
 import com.iiitb.oaes.DAO.Implementation.ItemsImpl;
 import com.iiitb.oaes.utils.SessionUtil;
 import org.hibernate.HibernateException;
@@ -17,7 +19,10 @@ public class Driver {
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
 
-            Query query = session.createQuery("delete from Items");
+            Query query = session.createQuery("delete from Course");
+            query.executeUpdate();
+
+            query = session.createQuery("delete from Items");
             query.executeUpdate();
 
             query = session.createQuery("delete from Authors");
@@ -27,8 +32,8 @@ public class Driver {
             System.out.print(exception.getLocalizedMessage());
         }
     }
-    public static void initializeAuthorDatabase() {
 
+    public static void initializeAuthorDatabase() {
         AuthorsImpl authorsDao = new AuthorsImpl();
 
         // Adding authors
@@ -57,8 +62,26 @@ public class Driver {
         // Correct password
         System.out.println("\nTesting Login with Correct Password");
         System.out.println(authorsDao.loginAuthor("alice_bob","Alice@123") == null? "Login failed": "Login successful");
+    }
 
+    public static void initializeCourseDatabase() {
+        CourseImpl courseDao = new CourseImpl();
 
+        // Adding course
+        System.out.println("-------------------------------------------\nAdding Courses\n-------------------------------------------");
+        Course course = new Course("Software Architecture","SA");
+        courseDao.createCourse(course);
+        System.out.println("Added Course 1\n");
+
+        course = new Course("Software Testing", "ST");
+        courseDao.createCourse(course);
+        System.out.println("Added Course 2");
+
+        // Displaying courses
+        System.out.println("-------------------------------------------\nDisplaying Courses\n-------------------------------------------");
+        List<Course> courseList = courseDao.getCourses();
+        for(Course curCourse: courseList)
+            System.out.println(curCourse);
     }
 
     public static void initializeItemDatabase(){
@@ -67,14 +90,15 @@ public class Driver {
         ItemsImpl itemsDao = new ItemsImpl();
 
         Items item = new Items("In which of the following patterns an interface is responsible for creating a factory of related objects without explicitly specifying their classes?",
-                "Factory Pattern",
-                "Abstract Factory Pattern",
-                "Singleton Pattern",
-                "Transfer Object Pattern",
-                2
+            "Factory Pattern",
+            "Abstract Factory Pattern",
+            "Singleton Pattern",
+            "Transfer Object Pattern",
+            2
         );
+
         String loginId = "john_white", password = "John@123";
-        itemsDao.createItem(item, loginId, password);
+        itemsDao.createItem(item, loginId, password, 1);
         System.out.println("Added Item 1\n");
 
         item = new Items("Which of the below is not a valid classification of design pattern",
@@ -84,8 +108,9 @@ public class Driver {
                 "J2EE patterns",
                 4
         );
+
         loginId = "alice_bob"; password = "Alice@123";
-        itemsDao.createItem(item, loginId, password);
+        itemsDao.createItem(item, loginId, password, 1);
         System.out.println("Added Item 2");
 
         // Displaying items
@@ -114,9 +139,32 @@ public class Driver {
         System.out.println(itemsDao.updateItem(item, loginId, password)? "Update failed": "Update successful");
         System.out.println("Finished Updating Item 2\n");
     }
+
     public static void main(String[] args) {
         clearDatabase();
         initializeAuthorDatabase();
+        initializeCourseDatabase();
         initializeItemDatabase();
+
+        // Login Author
+        // Save logged in author object as Driver class member and use it to pass in authorization parameters for later
+        // operations
+
+        // Add Item
+        // Ask for parameters
+        // Show list of courses and select course using id
+        // Execute existing method
+
+        // Get Items
+        // Show list of items
+
+        // Update Item
+        // Show Current Items
+        // Select from list using id
+        // Enter updated question
+        // Updated options
+        // Updated correct answer
+
+
     }
 }
