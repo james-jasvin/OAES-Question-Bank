@@ -4,9 +4,7 @@ import com.iiitb.oaes.Bean.Authors;
 import com.iiitb.oaes.Bean.Course;
 import com.iiitb.oaes.Bean.Items;
 import com.iiitb.oaes.DAO.CourseDao;
-import com.iiitb.oaes.DAO.Implementation.AuthorsImpl;
-import com.iiitb.oaes.DAO.Implementation.CourseImpl;
-import com.iiitb.oaes.DAO.Implementation.ItemsImpl;
+import com.iiitb.oaes.DAO.Implementation.*;
 import com.iiitb.oaes.utils.SessionUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -90,7 +88,7 @@ public class Driver {
     public static void initializeItemDatabase(){
         // Adding Items
         System.out.println("-------------------------------------------\nUse Case 1: Adding Items\n-------------------------------------------");
-        ItemsImpl itemsDao = new ItemsImpl();
+        ProxyItemsImpl itemsDao = new ProxyItemsImpl();
 
         Items item = new Items("In which of the following patterns an interface is responsible for creating a factory of related objects without explicitly specifying their classes?",
             "Factory Pattern",
@@ -149,25 +147,6 @@ public class Driver {
         initializeCourseDatabase();
         initializeItemDatabase();
 
-        // Login Author
-        // Save logged in author object as Driver class member and use it to pass in authorization parameters for later
-        // operations
-
-        // Add Item
-        // Ask for parameters
-        // Show list of courses and select course using id
-        // Execute existing method
-
-        // Get Items
-        // Show list of items
-
-        // Update Item
-        // Show Current Items
-        // Select from list using id
-        // Enter updated question
-        // Updated options
-        // Updated correct answer
-
         Scanner sc = new Scanner(System.in);
         int choice = -1;
 
@@ -181,7 +160,16 @@ public class Driver {
             loginId = sc.nextLine();
             password = sc.nextLine();
 
-            Authors author = authorsDao.loginAuthor(loginId,password);
+            InitiateLogin h1 = new InitiateLogin();
+            Sanitize h2 = new Sanitize();
+            Login h3 = new Login();
+
+            h1.setNext(h2);
+            h2.setNext(h3);
+
+            Authors author = h1.handle(loginId,password);
+
+//            Authors author = authorsDao.loginAuthor(loginId,password);
 
             // Login Author
             System.out.println("-------------------------------------------\nLogin\n-------------------------------------------");
@@ -197,10 +185,9 @@ public class Driver {
             // Save logged in author object as Driver class member and use it to pass in authorization parameters for later operations
 
             System.out.println("Select operation from below options\n 1. Add Items\n 2. Show Items\n 3. Update Items\n 4. Exit");
-            choice = sc.nextInt();
-            sc.nextLine();
+            choice = Integer.parseInt(sc.nextLine());
 
-            ItemsImpl itemsDao = new ItemsImpl();
+            ProxyItemsImpl itemsDao = new ProxyItemsImpl();
             Integer ques_choice = 1;
             String ques,opt1,opt2,opt3,opt4;
             Integer ans;
@@ -237,7 +224,7 @@ public class Driver {
                         opt4 = sc.nextLine();
 
                         System.out.println("Enter Answer :-");
-                        ans = sc.nextInt();
+                        ans = Integer.parseInt(sc.nextLine());
 
                         Items item = new Items(ques, opt1, opt2, opt3, opt4, ans);
                         boolean isItemAdded = itemsDao.createItem(item, loginId, password, cid);
@@ -247,8 +234,8 @@ public class Driver {
                             System.out.println("Item is not added !\n");
 
                         System.out.println("Want to add questions ?\n 1. YES\n 2. NO");
-                        ques_choice = sc.nextInt();
-                        sc.nextLine();
+                        ques_choice = Integer.parseInt(sc.nextLine());
+//                        sc.nextLine();
                     }
                     break;
 
@@ -276,9 +263,8 @@ public class Driver {
                     System.out.println("-------------------------------------------\nUpdating Item\n-------------------------------------------");
                     System.out.println("Enter -1 to not update that parameter");
                     System.out.println("Enter Question id to update");
-                    Integer qid = sc.nextInt();
+                    Integer qid = Integer.parseInt(sc.nextLine());
                     Items item = new Items(qid);
-                    sc.nextLine();
 
                     System.out.println("Enter New Question");
                     ques = sc.nextLine();
@@ -288,7 +274,7 @@ public class Driver {
                     System.out.println("Enter Option 1");
                     opt1 = sc.nextLine();
                     if(!opt1.equals("-1"))
-                    item.setOption1(opt1);
+                        item.setOption1(opt1);
 
                     System.out.println("Enter Option 2");
                     opt2 = sc.nextLine();
@@ -306,10 +292,10 @@ public class Driver {
                         item.setOption4(opt4);
 
                     System.out.println("Enter New Answer");
-                    ans = sc.nextInt();
+                    ans = Integer.parseInt(sc.nextLine());
                     if(!ans.equals(-1))
                         item.setAnswer(ans);
-                    sc.nextLine();
+//                    sc.nextLine();
 
                     itemsDao.updateItem(item, loginId, password);
                     System.out.println(itemsDao.updateItem(item, loginId, password)? "Update Successful": "Update failed");

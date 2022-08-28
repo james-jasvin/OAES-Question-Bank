@@ -10,5 +10,8 @@
         <module name="OAES_ItemBank" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="OAES_QuestionBank" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
