@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Authors implements Serializable {
+public class Author implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer authorId;
@@ -21,12 +21,12 @@ public class Authors implements Serializable {
     private String password;
 
     @OneToMany(mappedBy="author")
-    private List<Items> items;
+    private List<Item> items;
 
-    public Authors() {
+    public Author() {
     }
 
-    public Authors(String name, String loginId, String password) {
+    public Author(String name, String loginId, String password) {
         this.name = name;
         this.loginId = loginId;
         this.password = password;
@@ -61,11 +61,11 @@ public class Authors implements Serializable {
     }
 
     @JsonbTransient
-    public List<Items> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
-    public void setItems(List<Items> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 

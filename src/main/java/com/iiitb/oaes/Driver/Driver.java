@@ -1,23 +1,24 @@
 package com.iiitb.oaes.Driver;
 
-import com.iiitb.oaes.Bean.Authors;
-import com.iiitb.oaes.Bean.Course;
-import com.iiitb.oaes.Bean.Items;
+import com.iiitb.oaes.Bean.*;
+import com.iiitb.oaes.DAO.AuthorDao;
 import com.iiitb.oaes.DAO.CourseDao;
-import com.iiitb.oaes.DAO.Implementation.AuthorsImpl;
+import com.iiitb.oaes.DAO.Implementation.AuthorImpl;
 import com.iiitb.oaes.DAO.Implementation.CourseImpl;
-import com.iiitb.oaes.DAO.Implementation.ItemsImpl;
+import com.iiitb.oaes.DAO.Implementation.ItemImplFactory;
+import com.iiitb.oaes.DAO.Implementation.MCQItemImpl;
+import com.iiitb.oaes.DAO.ItemDao;
 import com.iiitb.oaes.utils.SessionUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Scanner;
 
 public class Driver {
+
     public static void clearDatabase() {
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
@@ -25,10 +26,10 @@ public class Driver {
             Query query = session.createQuery("delete from Course");
             query.executeUpdate();
 
-            query = session.createQuery("delete from Items");
+            query = session.createQuery("delete from Item");
             query.executeUpdate();
 
-            query = session.createQuery("delete from Authors");
+            query = session.createQuery("delete from Author");
             query.executeUpdate();
             transaction.commit();
         }  catch (HibernateException exception) {
@@ -37,48 +38,32 @@ public class Driver {
     }
 
     public static void initializeAuthorDatabase() {
-        AuthorsImpl authorsDao = new AuthorsImpl();
+        AuthorImpl authorsDao = new AuthorImpl();
 
         // Adding authors
-        System.out.println("-------------------------------------------\nAdding Authors\n-------------------------------------------");
-        Authors author = new Authors("John White","john_white","John@123");
+        Author author = new Author("John White","john_white","John@123");
         authorsDao.registerAuthor(author);
-        System.out.println("Added Author 1\n");
 
-        author = new Authors("Alice Bob","alice_bob","Alice@123");
+        author = new Author("Alice Bob","alice_bob","Alice@123");
         authorsDao.registerAuthor(author);
-        System.out.println("Added Author 2");
 
         // Displaying authors
         System.out.println("-------------------------------------------\nDisplaying Authors\n-------------------------------------------");
-        List<Authors> authorsList = authorsDao.getAuthors();
-        for(Authors authors:authorsList){
+        List<Author> authorsList = authorsDao.getAuthors();
+        for(Author authors:authorsList){
             System.out.println(authors);
         }
-
-        // Login author
-        // Wrong password
-//        System.out.println("-------------------------------------------\nLogin\n-------------------------------------------");
-//        System.out.println("Testing Login with Wrong Password");
-//        System.out.println(authorsDao.loginAuthor("john_white","Alice@123") == null? "Login failed": "Login successful");
-//
-//        // Correct password
-//        System.out.println("\nTesting Login with Correct Password");
-//        System.out.println(authorsDao.loginAuthor("alice_bob","Alice@123") == null? "Login failed": "Login successful");
     }
 
     public static void initializeCourseDatabase() {
         CourseImpl courseDao = new CourseImpl();
 
-        // Adding course
-        System.out.println("-------------------------------------------\nAdding Courses\n-------------------------------------------");
+        // Adding courses
         Course course = new Course("Software Architecture","SA");
         courseDao.createCourse(course);
-        System.out.println("Added Course 1\n");
 
         course = new Course("Software Testing", "ST");
         courseDao.createCourse(course);
-        System.out.println("Added Course 2");
 
         // Displaying courses
         System.out.println("-------------------------------------------\nDisplaying Courses\n-------------------------------------------");
@@ -89,10 +74,13 @@ public class Driver {
 
     public static void initializeItemDatabase(){
         // Adding Items
-        System.out.println("-------------------------------------------\nUse Case 1: Adding Items\n-------------------------------------------");
-        ItemsImpl itemsDao = new ItemsImpl();
+        ItemDao mcqItemImpl = ItemImplFactory.getItemImpl("MCQ");
 
-        Items item = new Items("In which of the following patterns an interface is responsible for creating a factory of related objects without explicitly specifying their classes?",
+        // Sanity check
+        assert mcqItemImpl != null;
+
+        // Adding MCQ Item 1
+        Item item = new MCQItem("In which of the following patterns an interface is responsible for creating a factory of related objects without explicitly specifying their classes?",
             "Factory Pattern",
             "Abstract Factory Pattern",
             "Singleton Pattern",
@@ -100,47 +88,183 @@ public class Driver {
             2
         );
 
-        String loginId = "john_white", password = "John@123";
-        itemsDao.createItem(item, loginId, password, 1);
-        System.out.println("Added Item 1\n");
+        AuthorDao authorImpl = new AuthorImpl();
 
-        item = new Items("Which of the below is not a valid classification of design pattern",
+        Author john = authorImpl.loginAuthor("john_white", "John@123");
+        Author alice = authorImpl.loginAuthor("alice_bob", "Alice@123");
+        mcqItemImpl.createItem(item, john, 1);
+
+        // Adding MCQ Item 2
+        item = new MCQItem("Which of the below is not a valid classification of design pattern",
                 "Creational patterns",
                 "Structural patterns",
                 "Behavioural patterns",
                 "J2EE patterns",
                 4
         );
+        mcqItemImpl.createItem(item, alice, 1);
 
-        loginId = "alice_bob"; password = "Alice@123";
-        itemsDao.createItem(item, loginId, password, 1);
-        System.out.println("Added Item 2");
+        // Adding True False Item 1
+        ItemDao trueFalseItemImpl = ItemImplFactory.getItemImpl("TrueFalse");
+        assert trueFalseItemImpl != null;
 
-        // Displaying items
-        System.out.println("-------------------------------------------\nUse Case 2: Displaying Items\n-------------------------------------------");
-        List<Items> savedItems = itemsDao.getItems(loginId, password);
+        item = new TrueFalseItem("Is the Earth Flat?",
+                true
+        );
+        trueFalseItemImpl.createItem(item, alice, 1);
 
-        for (Items i: savedItems)
+        // Displaying MCQ items
+        List<Item> savedItems = mcqItemImpl.getItems(alice);
+        for (Item i: savedItems)
             System.out.println(i);
 
-        // Updating Item with 2 parameters with invalid login credentials, update fails
-        System.out.println("-------------------------------------------\nUse Case 3: Updating Item\n-------------------------------------------");
-        item = new Items(2);
-        item.setQuestion("Which of the below is a valid classification of design pattern");
-        item.setOption2("Model-View-Controller");
-        item.setOption3("Abstract Interface");
-        item.setAnswer(1);
-        itemsDao.updateItem(item, loginId, password);
-        System.out.println(itemsDao.updateItem(item, loginId, password)? "Update failed": "Update successful");
-        System.out.println("Finished Updating Item 1\n");
+        // Display True False items
+        savedItems = trueFalseItemImpl.getItems(alice);
+        for (Item i: savedItems)
+            System.out.println(i);
 
-        // Updating Item with 3 parameters and correct login credentials, update successful
-        item = new Items(1);
-        item.setOption4("Observer Pattern");
-        item.setOption2("Abstract Factory Pattern");
-        item.setAnswer(2);
-        System.out.println(itemsDao.updateItem(item, loginId, password)? "Update failed": "Update successful");
-        System.out.println("Finished Updating Item 2\n");
+        // Updating MCQ Item with 4 parameters with correct login credentials, update successful
+        MCQItem mcqItem = new MCQItem(2);
+        mcqItem.setQuestion("Which of the below is a valid classification of design pattern");
+        mcqItem.setOption2("Model-View-Controller");
+        mcqItem.setOption3("Abstract Interface");
+        mcqItem.setAnswer(1);
+
+        System.out.println(mcqItemImpl.updateItem(mcqItem, alice)? "Update successful": "Update failed");
+
+        // Updating MCQ Item with 3 parameters and invalid login credentials, update fails
+        mcqItem = new MCQItem(1);
+        mcqItem.setOption4("Observer Pattern");
+        mcqItem.setOption2("Abstract Factory Pattern");
+        mcqItem.setAnswer(2);
+        System.out.println(mcqItemImpl.updateItem(mcqItem, alice)? "Update successful": "Update failed");
+
+        // Updating True False Item
+        TrueFalseItem tfItem = new TrueFalseItem(3);
+        tfItem.setAnswer(false);
+
+        System.out.println(trueFalseItemImpl.updateItem(tfItem, alice)? "Update successful": "Update failed");
+    }
+
+    public static void displayCourses(CourseDao courseDao) {
+        System.out.println("-------------------------------------------\nDisplaying Courses\n-------------------------------------------");
+        List<Course> savedCourses = courseDao.getCourses();
+
+        for (Course c: savedCourses)
+            System.out.println(c);
+
+    }
+
+    public static void displayItems(ItemDao itemImpl, Author author) {
+        System.out.println("-------------------------------------------\nDisplaying Items\n-------------------------------------------");
+        List<Item> savedItems = itemImpl.getItems(author);
+        for (Item i: savedItems)
+            System.out.println(i);
+    }
+
+    public static Integer getCourseIdInput(Scanner sc) {
+        System.out.println("Enter Course Id for Item");
+        return Integer.parseInt(sc.nextLine());
+    }
+
+    public static MCQItem getMCQItemInput(Scanner sc) {
+        System.out.println("Enter Question :-");
+        String ques = sc.nextLine();
+
+        System.out.println("Enter Option 1 :-");
+        String opt1 = sc.nextLine();
+
+        System.out.println("Enter Option 2 :-");
+        String opt2 = sc.nextLine();
+
+        System.out.println("Enter Option 3 :-");
+        String opt3 = sc.nextLine();
+
+        System.out.println("Enter Option 4 :-");
+        String opt4 = sc.nextLine();
+
+        System.out.println("Enter Answer :-");
+        Integer ans = Integer.parseInt(sc.nextLine());
+
+        return new MCQItem(ques, opt1, opt2, opt3, opt4, ans);
+    }
+
+    public static TrueFalseItem getTrueFalseItemInput(Scanner sc) {
+        System.out.println("Enter Question :-");
+        String ques = sc.nextLine();
+        System.out.println("Enter Answer :- \n 1.True\n 2.False");
+        Boolean ans = Integer.parseInt(sc.nextLine()) != 2;
+
+        return new TrueFalseItem(ques, ans);
+    }
+
+    public static void updateMCQItem(Scanner sc, ItemDao itemImpl, Author loggedInAuthor) {
+        System.out.println("-------------------------------------------\nUpdating MCQ Item\n-------------------------------------------");
+
+        System.out.println("Enter -1 to not update that parameter");
+        System.out.println("Enter Question ID to update");
+
+        Integer qid = Integer.parseInt(sc.nextLine());
+        MCQItem item = new MCQItem(qid);
+
+        System.out.println("Enter New Question");
+        String ques = sc.nextLine();
+        if (!ques.equals("-1"))
+            item.setQuestion(ques);
+
+        System.out.println("Enter Option 1");
+        String opt1 = sc.nextLine();
+        if (!opt1.equals("-1"))
+            item.setOption1(opt1);
+
+        System.out.println("Enter Option 2");
+        String opt2 = sc.nextLine();
+        if (!opt2.equals("-1"))
+            item.setOption2(opt2);
+
+        System.out.println("Enter Option 3");
+        String opt3 = sc.nextLine();
+        if (!opt3.equals("-1"))
+            item.setOption3(opt3);
+
+        System.out.println("Enter Option 4");
+        String opt4 = sc.nextLine();
+        if (!opt4.equals("-1"))
+            item.setOption4(opt4);
+
+        System.out.println("Enter New Answer");
+        Integer ans = Integer.parseInt(sc.nextLine());
+        if (!ans.equals(-1))
+            item.setAnswer(ans);
+
+        itemImpl.updateItem(item, loggedInAuthor);
+        System.out.println(itemImpl.updateItem(item, loggedInAuthor)? "Update Successful": "Update failed");
+        System.out.println("Item Updated Successfully");
+    }
+
+    public static void updateTrueFalseItem(Scanner sc, ItemDao itemImpl, Author loggedInAuthor) {
+        System.out.println("-------------------------------------------\nUpdating True False Item\n-------------------------------------------");
+
+        System.out.println("Enter -1 to not update that parameter");
+        System.out.println("Enter Question ID to update");
+
+        Integer qid = Integer.parseInt(sc.nextLine());
+        TrueFalseItem item = new TrueFalseItem(qid);
+
+        System.out.println("Enter New Question");
+        String ques = sc.nextLine();
+        if (!ques.equals("-1"))
+            item.setQuestion(ques);
+
+        System.out.println("Enter Answer :- \n 1.True\n 2.False");
+        Integer ans = Integer.parseInt(sc.nextLine());
+
+        if (!ans.equals(-1))
+            item.setAnswer(ans!=2);
+
+        itemImpl.updateItem(item, loggedInAuthor);
+        System.out.println(itemImpl.updateItem(item, loggedInAuthor)? "Update Successful": "Update failed");
+        System.out.println("Item Updated Successfully");
     }
 
     public static void main(String[] args) {
@@ -154,14 +278,20 @@ public class Driver {
         // operations
 
         // Add Item
-        // Ask for parameters
+        // Ask for type of Question to add => MCQ or True False
+        // Create corresponding Impl using Factory
+        // Ask for corresponding parameters
         // Show list of courses and select course using id
-        // Execute existing method
+        // Execute existing method using Impl
 
         // Get Items
-        // Show list of items
+        // Ask for type of Question to show => MCQ or True False
+        // Create corresponding Impl using Factory
+        // Show list of items using Impl
 
         // Update Item
+        // Ask for type of Question to show => MCQ or True False
+        // Create corresponding Impl using Factory
         // Show Current Items
         // Select from list using id
         // Enter updated question
@@ -171,84 +301,74 @@ public class Driver {
         Scanner sc = new Scanner(System.in);
         int choice = -1;
 
-        AuthorsImpl authorsDao = new AuthorsImpl();
+        AuthorImpl authorsDao = new AuthorImpl();
         CourseDao courseDao = new CourseImpl();
 
-        String loginId,password;
+        Author loggedInAuthor;
 
         while (true) {
             System.out.println("Enter Login-ID and Password :-");
-            loginId = sc.nextLine();
-            password = sc.nextLine();
+            String loginId = sc.nextLine();
+            String password = sc.nextLine();
 
-            Authors author = authorsDao.loginAuthor(loginId,password);
+            loggedInAuthor = authorsDao.loginAuthor(loginId, password);
 
             // Login Author
             System.out.println("-------------------------------------------\nLogin\n-------------------------------------------");
-            if(author != null){
+            if (loggedInAuthor != null) {
                 System.out.println("Login Successful");
                 break;
-            }else{
-                System.out.println("Login-Id or Password is Wrong");
             }
+            else
+                System.out.println("Login-Id or Password is Wrong");
         }
 
-        while(choice != 4){
+        while(choice != 4) {
             // Save logged in author object as Driver class member and use it to pass in authorization parameters for later operations
 
             System.out.println("Select operation from below options\n 1. Add Items\n 2. Show Items\n 3. Update Items\n 4. Exit");
-            choice = sc.nextInt();
-            sc.nextLine();
+            choice = Integer.parseInt(sc.nextLine());
 
-            ItemsImpl itemsDao = new ItemsImpl();
             Integer ques_choice = 1;
             String ques,opt1,opt2,opt3,opt4;
             Integer ans;
 
             switch (choice){
                 case 1:
-
+                    // Ask for Item Type => Create correct ItemImpl
                     // Add Item
                     // Ask for parameters
                     while(ques_choice == 1) {
                         System.out.println("-------------------------------------------\nAdding Items\n-------------------------------------------");
-                        System.out.println("-------------------------------------------\nDisplaying Courses\n-------------------------------------------");
-                        List<Course> savedCourses = courseDao.getCourses();
 
-                        for (Course c: savedCourses)
-                            System.out.println(c);
+                        displayCourses(courseDao);
+                        Integer cid = getCourseIdInput(sc);
 
-                        System.out.println("Enter Course Id for Item");
-                        Integer cid = Integer.parseInt(sc.nextLine());
+                        //Get question type
+                        System.out.println("Select Question Type :\n 1.MCQ\n 2. True or False");
+                        int qtype = Integer.parseInt(sc.nextLine());
+                        ItemDao itemImpl;
+                        Item item;
 
-                        System.out.println("Enter Question :-");
-                        ques = sc.nextLine();
+                        if(qtype == 1){
+                            itemImpl = ItemImplFactory.getItemImpl("MCQ");
+                            item = getMCQItemInput(sc);
 
-                        System.out.println("Enter Option 1 :-");
-                        opt1 = sc.nextLine();
+                        }else{
+                            itemImpl = ItemImplFactory.getItemImpl("TrueFalse");
+                            item = getTrueFalseItemInput(sc);
+                        }
 
-                        System.out.println("Enter Option 2 :-");
-                        opt2 = sc.nextLine();
 
-                        System.out.println("Enter Option 3 :-");
-                        opt3 = sc.nextLine();
 
-                        System.out.println("Enter Option 4 :-");
-                        opt4 = sc.nextLine();
-
-                        System.out.println("Enter Answer :-");
-                        ans = sc.nextInt();
-
-                        Items item = new Items(ques, opt1, opt2, opt3, opt4, ans);
-                        boolean isItemAdded = itemsDao.createItem(item, loginId, password, cid);
+                        boolean isItemAdded = itemImpl.createItem(item, loggedInAuthor, cid);
                         if (isItemAdded)
                             System.out.println("Item Added Successfully\n");
                         else
-                            System.out.println("Item is not added !\n");
+                            System.out.println("Item is not added!\n");
 
-                        System.out.println("Want to add questions ?\n 1. YES\n 2. NO");
-                        ques_choice = sc.nextInt();
-                        sc.nextLine();
+                        System.out.println("Want to add questions?\n 1. YES\n 2. NO");
+                        ques_choice = Integer.parseInt(sc.nextLine());
                     }
                     break;
 
@@ -256,10 +376,19 @@ public class Driver {
                     // Get Items
                     // Show list of items
 
-                    System.out.println("-------------------------------------------\nDisplaying Items\n-------------------------------------------");
-                    List<Items> savedItems = itemsDao.getItems(loginId, password);
-                    for (Items i: savedItems)
-                        System.out.println(i);
+                    //Get question type
+                    System.out.println("Select Question Type :\n 1.MCQ\n 2. True or False");
+                    int qtype = Integer.parseInt(sc.nextLine());
+                    ItemDao itemImpl;
+                    Item item;
+
+                    if(qtype == 1){
+                        itemImpl = ItemImplFactory.getItemImpl("MCQ");
+
+                    }else{
+                        itemImpl = ItemImplFactory.getItemImpl("TrueFalse");
+                    }
+                    displayItems(itemImpl, loggedInAuthor);
                     break;
 
                 case 3:
@@ -268,56 +397,27 @@ public class Driver {
                     // Updated correct answer
 
                     // Show Current Items
-                    System.out.println("-------------------------------------------\nDisplaying Items\n-------------------------------------------");
-                    savedItems = itemsDao.getItems(loginId, password);
-                    for (Items i: savedItems)
-                        System.out.println(i);
 
-                    System.out.println("-------------------------------------------\nUpdating Item\n-------------------------------------------");
-                    System.out.println("Enter -1 to not update that parameter");
-                    System.out.println("Enter Question id to update");
-                    Integer qid = sc.nextInt();
-                    Items item = new Items(qid);
-                    sc.nextLine();
+                    //Get question type
+                    System.out.println("Select Question Type :\n 1.MCQ\n 2. True or False");
+                    qtype = Integer.parseInt(sc.nextLine());
 
-                    System.out.println("Enter New Question");
-                    ques = sc.nextLine();
-                    if(!ques.equals("-1"))
-                        item.setQuestion(ques);
+                    if(qtype == 1){
+                        itemImpl = ItemImplFactory.getItemImpl("MCQ");
+                        displayItems(itemImpl, loggedInAuthor);
+                        updateMCQItem(sc, itemImpl, loggedInAuthor);
 
-                    System.out.println("Enter Option 1");
-                    opt1 = sc.nextLine();
-                    if(!opt1.equals("-1"))
-                    item.setOption1(opt1);
-
-                    System.out.println("Enter Option 2");
-                    opt2 = sc.nextLine();
-                    if(!opt2.equals("-1"))
-                        item.setOption2(opt2);
-
-                    System.out.println("Enter Option 3");
-                    opt3 = sc.nextLine();
-                    if(!opt3.equals("-1"))
-                        item.setOption3(opt3);
-
-                    System.out.println("Enter Option 4");
-                    opt4 = sc.nextLine();
-                    if(!opt4.equals("-1"))
-                        item.setOption4(opt4);
-
-                    System.out.println("Enter New Answer");
-                    ans = sc.nextInt();
-                    if(!ans.equals(-1))
-                        item.setAnswer(ans);
-                    sc.nextLine();
-
-                    itemsDao.updateItem(item, loginId, password);
-                    System.out.println(itemsDao.updateItem(item, loginId, password)? "Update Successful": "Update failed");
-                    System.out.println("Item Updated Successfully");
+                    }else{
+                        itemImpl = ItemImplFactory.getItemImpl("TrueFalse");
+                        displayItems(itemImpl, loggedInAuthor);
+                        updateTrueFalseItem(sc, itemImpl, loggedInAuthor);
+                    }
                     break;
+
                 case 4:
                     System.out.println("\n\n-------------------------------------------THANK YOU-------------------------------------------\n\n");
                     break;
+
                 default:
                     System.out.println("Enter Valid Choice");
             }
