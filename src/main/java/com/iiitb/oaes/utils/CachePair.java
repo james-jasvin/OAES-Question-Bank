@@ -1,25 +1,25 @@
 package com.iiitb.oaes.utils;
 
-import com.iiitb.oaes.Bean.Items;
+import com.iiitb.oaes.Bean.Item;
 
 import java.util.List;
 
 public class CachePair {
-    List<Items> items;
+    List<Item> items;
     Boolean needReset;
 
-    public CachePair(){}
+//    public CachePair(){}
 
-    public CachePair(List<Items> items, Boolean needReset) {
+    public CachePair(List<Item> items, Boolean needReset) {
         this.items = items;
         this.needReset = needReset;
     }
 
-    public List<Items> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
-    public void setItems(List<Items> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 

@@ -1,6 +1,5 @@
 package com.iiitb.oaes.Bean;
 
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -18,7 +17,7 @@ public class Course implements Serializable {
     private String abbreviation;
 
     @OneToMany(mappedBy="course")
-    private List<Items> items;
+    private List<Item> items;
 
     public Course(String name, String abbreviation) {
         this.name = name;
@@ -45,11 +44,11 @@ public class Course implements Serializable {
         this.abbreviation = abbreviation;
     }
 
-    public List<Items> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
-    public void setItems(List<Items> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 

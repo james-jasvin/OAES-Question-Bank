@@ -1,7 +1,7 @@
 package com.iiitb.oaes.DAO;
 
-import com.iiitb.oaes.Bean.Authors;
+import com.iiitb.oaes.Bean.Author;
 
 public interface HandlerDao {
-    Authors handle(String loginId,String password);
+    Author handle(String loginId,String password);
 }
