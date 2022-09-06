@@ -30,7 +30,6 @@ public class ProxyMCQItemsImpl implements ItemDao {
 
     @Override
     public List<Item> getItems(Author author) {
-        Session session = SessionUtil.getSession();
         String loginId = author.getLoginId();
 
         if(cacheItems.containsKey(loginId) && !cacheItems.get(loginId).getNeedReset()){
@@ -39,22 +38,15 @@ public class ProxyMCQItemsImpl implements ItemDao {
             return pair_items.getItems();
         }
 
-        List<Item> items = new ArrayList<>();
-
+        List<Item> items;
         try {
-
-//            Query query = session.createQuery("from Item where author=:authorId and ");
-//            query.setParameter("authorId", author);
-//
-//            for (final Object item : query.list()) {
-//                items.add((Item) item);
-//            }
             items = itemImpl.getItems(author);
             CachePair fetched_data= new CachePair(items, false);
 
             cacheItems.put(loginId,fetched_data);
             return items;
-        } catch (HibernateException exception) {
+        }
+        catch (HibernateException exception) {
             System.out.print(exception.getLocalizedMessage());
             return new ArrayList<>();
         }

@@ -20,7 +20,6 @@ public class TrueFalseItemImpl implements ItemDao {
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
 
-            AuthorDao authorImpl = new AuthorImpl();
             CourseDao courseImpl = new CourseImpl();
 
             Course course = courseImpl.getCourseById(courseId);
@@ -43,7 +42,7 @@ public class TrueFalseItemImpl implements ItemDao {
         List<Item> items = new ArrayList<>();
 
         try {
-            Query query = session.createQuery("from Item where author=:authorId and itemType='TrueFalse'");
+            Query query = session.createQuery("from TrueFalseItem where author=:authorId");
             query.setParameter("authorId", author);
 
             for (final Object item : query.list())
@@ -62,7 +61,7 @@ public class TrueFalseItemImpl implements ItemDao {
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
 
-            Query query = session.createQuery("from Item where itemId=:itemId and author=:author");
+            Query query = session.createQuery("from TrueFalseItem where itemId=:itemId and author=:author");
             query.setParameter("itemId", updatedItem.getItemId());
             query.setParameter("author", author);
 

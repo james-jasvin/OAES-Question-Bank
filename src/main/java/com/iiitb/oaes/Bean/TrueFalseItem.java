@@ -1,15 +1,11 @@
 package com.iiitb.oaes.Bean;
 
-import org.hibernate.annotations.Check;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@DiscriminatorValue("TrueFalse")
-@Check(constraints = "answer BETWEEN 1 AND 4")
 public class TrueFalseItem extends Item implements Serializable {
-    @Column
+    @Column(nullable = false)
     private Boolean answer;
 
     public TrueFalseItem() { }

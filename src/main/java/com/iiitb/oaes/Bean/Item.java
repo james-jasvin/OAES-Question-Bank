@@ -4,11 +4,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "itemType", discriminatorType = DiscriminatorType.STRING)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Item implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, nullable = false)
     protected Integer itemId;
 
 //    @Column(nullable = false)
@@ -23,10 +23,6 @@ public class Item implements Serializable {
 
     @Column(unique = true, nullable = false)
     protected String question;
-
-    // Discriminator column can be used a read-only property, so that's what this does
-    @Column(insertable = false, updatable = false)
-    private String itemType;
 
     @ManyToOne
     @JoinColumn(name="courseId", nullable=false)
@@ -43,17 +39,6 @@ public class Item implements Serializable {
         this.itemId = itemId;
     }
 
-    //    public Items(Integer version, Integer usedCounter, String question, String option1, String option2, String option3, String option4, Integer answer) {
-//        this.version = version;
-//        this.usedCounter = usedCounter;
-//        this.question = question;
-//        this.option1 = option1;
-//        this.option2 = option2;
-//        this.option3 = option3;
-//        this.option4 = option4;
-//        this.answer = answer;
-//    }
-
     public String getQuestion() {
         return question;
     }
@@ -64,14 +49,6 @@ public class Item implements Serializable {
 
     public Integer getItemId() {
         return itemId;
-    }
-
-    public String getItemType() {
-        return itemType;
-    }
-
-    public void setItemType(String itemType) {
-        this.itemType = itemType;
     }
 
     public Author getAuthor() {
@@ -89,29 +66,4 @@ public class Item implements Serializable {
     public void setCourse(Course course) {
         this.course = course;
     }
-
-    //    public Integer getQuestionId() {
-//        return questionId;
-//    }
-//
-//    public void setQuestionId(Integer questionId) {
-//        this.questionId = questionId;
-//    }
-//
-//    public Integer getVersion() {
-//        return version;
-//    }
-//
-//    public void setVersion(Integer version) {
-//        this.version = version;
-//    }
-//
-//    public Integer getUsedCounter() {
-//        return usedCounter;
-//    }
-//
-//    public void setUsedCounter(Integer usedCounter) {
-//        this.usedCounter = usedCounter;
-//    }
-
 }

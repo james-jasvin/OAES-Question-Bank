@@ -42,7 +42,7 @@ public class MCQItemImpl implements ItemDao {
 
         try {
             // Fetch the Author's MCQ Items
-            Query query = session.createQuery("from Item where author=:author and itemType='MCQ'");
+            Query query = session.createQuery("from MCQItem where author=:author");
             query.setParameter("author", author);
 
             for (final Object item : query.list())
@@ -61,26 +61,20 @@ public class MCQItemImpl implements ItemDao {
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
 
-            Query query = session.createQuery("from Item where itemId=:itemId and author=:author");
+            Query query = session.createQuery("from MCQItem where itemId=:itemId and author=:author");
             query.setParameter("itemId", updatedItem.getItemId());
             query.setParameter("author", author);
 
             if (query.list().size() == 0)
                 return false;
 
-            Item dbItem = (Item) query.list().get(0);
+            MCQItem dbItem = (MCQItem) query.list().get(0);
 
             if (updatedItem.getQuestion() != null)
                 dbItem.setQuestion(updatedItem.getQuestion());
 
-            if (dbItem.getItemType().equals("MCQ")) {
-                MCQItem mcqUpdatedItem = (MCQItem) updatedItem, mcqDbItem = (MCQItem) dbItem;
-                updateMCQItem(mcqUpdatedItem, mcqDbItem);
-            }
-            else if (dbItem.getItemType().equals("TrueFalse")) {
-                TrueFalseItem tfUpdatedItem = (TrueFalseItem) updatedItem, tfDbItem = (TrueFalseItem) dbItem;
-                updateTrueFalseItem(tfUpdatedItem, tfDbItem);
-            }
+            MCQItem mcqUpdatedItem = (MCQItem) updatedItem;
+            updateMCQItem(mcqUpdatedItem, dbItem);
 
             session.update(dbItem);
             transaction.commit();
@@ -109,10 +103,4 @@ public class MCQItemImpl implements ItemDao {
         if (updatedItem.getAnswer() != null)
             dbItem.setAnswer(updatedItem.getAnswer());
     }
-
-    public void updateTrueFalseItem(TrueFalseItem updatedItem, TrueFalseItem dbItem) {
-        if (updatedItem.getAnswer() != null)
-            dbItem.setAnswer(updatedItem.getAnswer());
-    }
-
 }
