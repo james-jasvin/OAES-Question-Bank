@@ -29,7 +29,8 @@ public class Driver {
             query = session.createQuery("delete from Author");
             query.executeUpdate();
             transaction.commit();
-        }  catch (HibernateException exception) {
+        }
+        catch (HibernateException exception) {
             System.out.print(exception.getLocalizedMessage());
         }
     }
@@ -47,9 +48,9 @@ public class Driver {
         // Displaying authors
         System.out.println("-------------------------------------------\nDisplaying Author\n-------------------------------------------");
         List<Author> authorsList = authorsDao.getAuthors();
-        for(Author authors:authorsList){
+
+        for(Author authors:authorsList)
             System.out.println(authors);
-        }
     }
 
     public static void initializeCourseDatabase() {
@@ -72,11 +73,7 @@ public class Driver {
     public static void initializeItemDatabase(){
         // Adding Items
         System.out.println("-------------------------------------------\nUse Case 1: Adding Items\n-------------------------------------------");
-        ProxyMCQItemsImpl itemsDao = new ProxyMCQItemsImpl();
-        ItemDao mcqItemImpl = ItemImplFactory.getItemImpl("MCQ");
-
-        // Sanity check
-        assert mcqItemImpl != null;
+        ItemDao itemDao = new ItemImpl();
 
         // Adding MCQ Item 1
         Item item = new MCQItem("In which of the following patterns an interface is responsible for creating a factory of related objects without explicitly specifying their classes?",
@@ -89,9 +86,12 @@ public class Driver {
 
         AuthorDao authorImpl = new AuthorImpl();
 
-        Author john = authorImpl.loginAuthor("john_white", "John@123");
-        Author alice = authorImpl.loginAuthor("alice_bob", "Alice@123");
-        mcqItemImpl.createItem(item, john, 1);
+        Author john = new Author("John White", "john_white", "John@123");
+        Author alice = new Author("Alice Bob", "alice_bob", "Alice@123");
+
+        john = authorImpl.loginAuthor(john);
+        alice = authorImpl.loginAuthor(alice);
+        itemDao.createItem(item, john, 1);
 
         // Adding MCQ Item 2
         item = new MCQItem("Which of the below is not a valid classification of design pattern",
@@ -101,24 +101,21 @@ public class Driver {
                 "J2EE patterns",
                 4
         );
-        mcqItemImpl.createItem(item, alice, 1);
+        itemDao.createItem(item, alice, 1);
 
         // Adding True False Item 1
-        ItemDao trueFalseItemImpl = ItemImplFactory.getItemImpl("TrueFalse");
-        assert trueFalseItemImpl != null;
-
         item = new TrueFalseItem("Is the Earth Flat?",
                 true
         );
-        trueFalseItemImpl.createItem(item, alice, 1);
+        itemDao.createItem(item, alice, 1);
 
         // Displaying MCQ items
-        List<Item> savedItems = mcqItemImpl.getItems(alice);
+        List<Item> savedItems = itemDao.getItems(alice.getAuthorId());
         for (Item i: savedItems)
             System.out.println(i);
 
         // Display True False items
-        savedItems = trueFalseItemImpl.getItems(alice);
+        savedItems = itemDao.getItems(alice.getAuthorId());
         for (Item i: savedItems)
             System.out.println(i);
 
@@ -129,20 +126,20 @@ public class Driver {
         mcqItem.setOption3("Abstract Interface");
         mcqItem.setAnswer(1);
 
-        System.out.println(mcqItemImpl.updateItem(mcqItem, alice)? "Update successful": "Update failed");
+        System.out.println(itemDao.updateItem(mcqItem, alice.getAuthorId())? "Update successful": "Update failed");
 
         // Updating MCQ Item with 3 parameters and invalid login credentials, update fails
         mcqItem = new MCQItem(1);
         mcqItem.setOption4("Observer Pattern");
         mcqItem.setOption2("Abstract Factory Pattern");
         mcqItem.setAnswer(2);
-        System.out.println(mcqItemImpl.updateItem(mcqItem, alice)? "Update successful": "Update failed");
+        System.out.println(itemDao.updateItem(mcqItem, alice.getAuthorId())? "Update successful": "Update failed");
 
         // Updating True False Item
         TrueFalseItem tfItem = new TrueFalseItem(3);
         tfItem.setAnswer(false);
 
-        System.out.println(trueFalseItemImpl.updateItem(tfItem, alice)? "Update successful": "Update failed");
+        System.out.println(itemDao.updateItem(tfItem, alice.getAuthorId())? "Update successful": "Update failed");
     }
 
     public static void displayCourses(CourseDao courseDao) {
@@ -156,7 +153,7 @@ public class Driver {
 
     public static void displayItems(ItemDao itemImpl, Author author) {
         System.out.println("-------------------------------------------\nDisplaying Items\n-------------------------------------------");
-        List<Item> savedItems = itemImpl.getItems(author);
+        List<Item> savedItems = itemImpl.getItems(author.getAuthorId());
         for (Item i: savedItems)
             System.out.println(i);
     }
@@ -236,8 +233,7 @@ public class Driver {
         if (!ans.equals(-1))
             item.setAnswer(ans);
 
-        itemImpl.updateItem(item, loggedInAuthor);
-        System.out.println(itemImpl.updateItem(item, loggedInAuthor)? "Update Successful": "Update failed");
+        System.out.println(itemImpl.updateItem(item, loggedInAuthor.getAuthorId())? "Update Successful": "Update failed");
         System.out.println("Item Updated Successfully");
     }
 
@@ -261,13 +257,12 @@ public class Driver {
         if (!ans.equals(-1))
             item.setAnswer(ans!=2);
 
-        itemImpl.updateItem(item, loggedInAuthor);
-        System.out.println(itemImpl.updateItem(item, loggedInAuthor)? "Update Successful": "Update failed");
+        System.out.println(itemImpl.updateItem(item, loggedInAuthor.getAuthorId())? "Update Successful": "Update failed");
         System.out.println("Item Updated Successfully");
     }
 
     public static void main(String[] args) {
-//        clearDatabase();
+        clearDatabase();
         initializeAuthorDatabase();
         initializeCourseDatabase();
         initializeItemDatabase();
@@ -300,7 +295,6 @@ public class Driver {
         Scanner sc = new Scanner(System.in);
         int choice = -1;
 
-        AuthorImpl authorsDao = new AuthorImpl();
         CourseDao courseDao = new CourseImpl();
 
         Author loggedInAuthor;
@@ -311,6 +305,7 @@ public class Driver {
             String password = sc.nextLine();
             Author tempAuthor = new Author("Dummy Name", loginId, password);
 
+            // Initiating Chain of Responsibility
             InitiateLogin h1 = new InitiateLogin();
             Sanitize h2 = new Sanitize();
             Login h3 = new Login();
@@ -338,8 +333,8 @@ public class Driver {
             System.out.println("Select operation from below options\n 1. Add Items\n 2. Show Items\n 3. Update Items\n 4. Exit");
             choice = Integer.parseInt(sc.nextLine());
 
-            ProxyMCQItemsImpl itemsDao = new ProxyMCQItemsImpl();
-            Integer ques_choice = 1;
+            ItemDao itemDao = new ItemImpl();
+            Integer ques_choice = 1, qtype;
 
             switch (choice){
                 case 1:
@@ -354,20 +349,15 @@ public class Driver {
 
                         //Get question type
                         System.out.println("Select Question Type :\n 1.MCQ\n 2. True or False");
-                        int qtype = Integer.parseInt(sc.nextLine());
-                        ItemDao itemImpl;
+                        qtype = Integer.parseInt(sc.nextLine());
                         Item item;
 
-                        if(qtype == 1){
-                            itemImpl = ItemImplFactory.getItemImpl("MCQ");
+                        if (qtype == 1)
                             item = getMCQItemInput(sc);
-
-                        }else{
-                            itemImpl = ItemImplFactory.getItemImpl("TrueFalse");
+                        else
                             item = getTrueFalseItemInput(sc);
-                        }
 
-                        boolean isItemAdded = itemImpl.createItem(item, loggedInAuthor, cid);
+                        boolean isItemAdded = itemDao.createItem(item, loggedInAuthor, cid);
                         if (isItemAdded)
                             System.out.println("Item Added Successfully\n");
                         else
@@ -381,20 +371,7 @@ public class Driver {
                 case 2:
                     // Get Items
                     // Show list of items
-
-                    //Get question type
-                    System.out.println("Select Question Type :\n 1.MCQ\n 2. True or False");
-                    int qtype = Integer.parseInt(sc.nextLine());
-                    ItemDao itemImpl;
-                    Item item;
-
-                    if (qtype == 1) {
-                        itemImpl = ItemImplFactory.getItemImpl("MCQ");
-
-                    } else{
-                        itemImpl = ItemImplFactory.getItemImpl("TrueFalse");
-                    }
-                    displayItems(itemImpl, loggedInAuthor);
+                    displayItems(itemDao, loggedInAuthor);
                     break;
 
                 case 3:
@@ -408,16 +385,13 @@ public class Driver {
                     System.out.println("Select Question Type :\n 1.MCQ\n 2. True or False");
                     qtype = Integer.parseInt(sc.nextLine());
 
-                    if(qtype == 1){
-                        itemImpl = ItemImplFactory.getItemImpl("MCQ");
-                        displayItems(itemImpl, loggedInAuthor);
-                        updateMCQItem(sc, itemImpl, loggedInAuthor);
+                    displayItems(itemDao, loggedInAuthor);
 
-                    }else{
-                        itemImpl = ItemImplFactory.getItemImpl("TrueFalse");
-                        displayItems(itemImpl, loggedInAuthor);
-                        updateTrueFalseItem(sc, itemImpl, loggedInAuthor);
-                    }
+                    if (qtype == 1)
+                        updateMCQItem(sc, itemDao, loggedInAuthor);
+                    else
+                        updateTrueFalseItem(sc, itemDao, loggedInAuthor);
+
                     break;
 
                 case 4:

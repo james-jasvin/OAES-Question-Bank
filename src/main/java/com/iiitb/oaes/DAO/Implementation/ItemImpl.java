@@ -35,14 +35,14 @@ public class ItemImpl implements ItemDao {
     }
 
     @Override
-    public List<Item> getItems(Author author) {
+    public List<Item> getItems(Integer authorId) {
         Session session = SessionUtil.getSession();
         List<Item> items = new ArrayList<>();
 
         try {
             // Fetch the Author's MCQ Items
-            Query query = session.createQuery("from Item where author=:author");
-            query.setParameter("author", author);
+            Query query = session.createQuery("from Item where author.authorId=:authorId");
+            query.setParameter("authorId", authorId);
 
             for (final Object item : query.list())
                 items.add((Item) item);
@@ -56,13 +56,13 @@ public class ItemImpl implements ItemDao {
     }
 
     @Override
-    public boolean updateItem(Item updatedItem, Author author) {
+    public boolean updateItem(Item updatedItem, Integer authorId) {
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
 
-            Query query = session.createQuery("from Item where itemId=:itemId and author=:author");
+            Query query = session.createQuery("from Item where itemId=:itemId and author.authorId=:authorId");
             query.setParameter("itemId", updatedItem.getItemId());
-            query.setParameter("author", author);
+            query.setParameter("authorId", authorId);
 
             if (query.list().size() == 0)
                 return false;

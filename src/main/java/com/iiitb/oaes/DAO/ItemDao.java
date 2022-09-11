@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ItemDao {
     boolean createItem(Item item, Author author, Integer courseId);
-    List<Item> getItems(Author author);
-    boolean updateItem(Item item, Author author);
+    List<Item> getItems(Integer authorId);
+    boolean updateItem(Item item, Integer authorId);
 }

@@ -10,7 +10,10 @@ public class TrueFalseItem extends Item implements Serializable {
 
     public TrueFalseItem() { }
 
-    public TrueFalseItem(Integer itemId) { this.itemId = itemId; }
+    public TrueFalseItem(Integer itemId) {
+        this.itemId = itemId;
+        this.itemType = "TrueFalse";
+    }
 
     public TrueFalseItem(String question, Boolean answer) {
         this.question = question;
@@ -31,6 +34,6 @@ public class TrueFalseItem extends Item implements Serializable {
         return "\nQuestion ID: " + itemId + '\n' +
                 "Question: " + question + '\n' +
                 "Correct Answer: " + answer + '\n' +
-                "Course: " + course.getName() + '\n';
+                (course != null? "Course: " + course.getName() + '\n': "");
     }
 }

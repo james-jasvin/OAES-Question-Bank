@@ -1,0 +1,5 @@
+POST http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/login
+content-type: application/json
+{
+    "username": "john_white", "password": "John@123"
+}

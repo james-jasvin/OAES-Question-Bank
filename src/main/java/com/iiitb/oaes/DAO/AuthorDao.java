@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface AuthorDao {
     boolean registerAuthor(Author author);
-    Author loginAuthor(String loginId, String password);
+    Author loginAuthor(Author author);
     List<Author> getAuthors();
 
 //    Author getAuthorsByID(String authorid);

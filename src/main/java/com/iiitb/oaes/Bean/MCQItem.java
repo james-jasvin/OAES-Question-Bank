@@ -22,7 +22,10 @@ public class MCQItem extends Item implements Serializable {
 
     public MCQItem() { }
 
-    public MCQItem(Integer itemId) { this.itemId = itemId; }
+    public MCQItem(Integer itemId) {
+        this.itemId = itemId;
+        this.itemType = "MCQ";
+    }
 
     public MCQItem(String question, String option1, String option2, String option3, String option4, Integer answer) {
         this.question = question;
@@ -83,7 +86,7 @@ public class MCQItem extends Item implements Serializable {
                 "Option 3: " + option3 + '\n' +
                 "Option 4: " + option4 + '\n' +
                 "Correct Option: " + answer + '\n' +
-                "Course: " + course.getName() + '\n';
+                (course != null? "Course: " + course.getName() + '\n': "");
     }
 }
 

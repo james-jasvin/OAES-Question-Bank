@@ -26,9 +26,11 @@ public class AuthorImpl implements AuthorDao {
     }
 
     @Override
-    public Author loginAuthor(String loginId, String password) {
+    public Author loginAuthor(Author author) {
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
+            String loginId = author.getLoginId(), password = author.getPassword();
+
             Query query = session.createQuery("from Author where loginId=:loginId");
             query.setParameter("loginId", loginId);
 
@@ -40,7 +42,8 @@ public class AuthorImpl implements AuthorDao {
                     return existingAuthor;
             }
             return null;
-        } catch (HibernateException exception) {
+        }
+        catch (HibernateException exception) {
             System.out.print(exception.getLocalizedMessage());
             return null;
         }

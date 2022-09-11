@@ -1,5 +1,6 @@
 package com.iiitb.oaes.Bean;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -54,6 +55,7 @@ public class Item implements Serializable {
         return itemId;
     }
 
+    @JsonbTransient
     public Author getAuthor() {
         return author;
     }
@@ -62,6 +64,7 @@ public class Item implements Serializable {
         this.author = author;
     }
 
+    @JsonbTransient
     public Course getCourse() {
         return course;
     }
