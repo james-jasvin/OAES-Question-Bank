@@ -4,11 +4,8 @@ import com.iiitb.oaes.Bean.Author;
 import com.iiitb.oaes.Bean.Item;
 import com.iiitb.oaes.DAO.ItemDao;
 import com.iiitb.oaes.utils.CachePair;
-import com.iiitb.oaes.utils.SessionUtil;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.HashMap;

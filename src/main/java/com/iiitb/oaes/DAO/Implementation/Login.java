@@ -11,22 +11,22 @@ import org.hibernate.query.Query;
 public class Login implements HandlerDao {
     HandlerDao next;
     @Override
-    public Author handle(String loginId,String password) {
+    public Author handle(Author author) {
         System.out.println("Logging user in ...");
         if(next != null){
-            return next.handle(loginId,password);
+            return next.handle(author);
         }
 
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
             Query query = session.createQuery("from Author where loginId=:loginId");
-            query.setParameter("loginId", loginId);
+            query.setParameter("loginId", author.getLoginId());
 
             for (final Object fetch: query.list())
             {
                 Author existingAuthor = (Author) fetch;
 
-                if (existingAuthor.getPassword().equals(password))
+                if (existingAuthor.getPassword().equals(author.getPassword()))
                     return existingAuthor;
             }
             return null;

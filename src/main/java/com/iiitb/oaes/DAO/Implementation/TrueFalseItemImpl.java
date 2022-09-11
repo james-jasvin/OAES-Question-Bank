@@ -1,7 +1,6 @@
 package com.iiitb.oaes.DAO.Implementation;
 
 import com.iiitb.oaes.Bean.*;
-import com.iiitb.oaes.DAO.AuthorDao;
 import com.iiitb.oaes.DAO.CourseDao;
 import com.iiitb.oaes.DAO.ItemDao;
 import com.iiitb.oaes.utils.SessionUtil;

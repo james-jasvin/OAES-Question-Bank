@@ -15,6 +15,7 @@ public class TrueFalseItem extends Item implements Serializable {
     public TrueFalseItem(String question, Boolean answer) {
         this.question = question;
         this.answer = answer;
+        this.itemType = "TrueFalse";
     }
 
     public Boolean getAnswer() {

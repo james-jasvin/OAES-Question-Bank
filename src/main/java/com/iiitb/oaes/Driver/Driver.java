@@ -267,7 +267,7 @@ public class Driver {
     }
 
     public static void main(String[] args) {
-        clearDatabase();
+//        clearDatabase();
         initializeAuthorDatabase();
         initializeCourseDatabase();
         initializeItemDatabase();
@@ -309,6 +309,7 @@ public class Driver {
             System.out.println("Enter Login-ID and Password :-");
             String loginId = sc.nextLine();
             String password = sc.nextLine();
+            Author tempAuthor = new Author("Dummy Name", loginId, password);
 
             InitiateLogin h1 = new InitiateLogin();
             Sanitize h2 = new Sanitize();
@@ -317,12 +318,14 @@ public class Driver {
             h1.setNext(h2);
             h2.setNext(h3);
 
-            loggedInAuthor = h1.handle(loginId,password);
+            loggedInAuthor = h1.handle(tempAuthor);
 
             // Login Author
             System.out.println("-------------------------------------------\nLogin\n-------------------------------------------");
             if (loggedInAuthor != null) {
                 System.out.println("Login Successful");
+                ItemDao itemDao = new ItemImpl();
+                displayItems(itemDao, loggedInAuthor);
                 break;
             }
             else
@@ -330,7 +333,7 @@ public class Driver {
         }
 
         while(choice != 4) {
-            // Save logged in author object as Driver class member and use it to pass in authorization parameters for later operations
+//             Save logged in author object as Driver class member and use it to pass in authorization parameters for later operations
 
             System.out.println("Select operation from below options\n 1. Add Items\n 2. Show Items\n 3. Update Items\n 4. Exit");
             choice = Integer.parseInt(sc.nextLine());

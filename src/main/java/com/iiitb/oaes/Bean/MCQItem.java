@@ -31,6 +31,7 @@ public class MCQItem extends Item implements Serializable {
         this.option3 = option3;
         this.option4 = option4;
         this.answer = answer;
+        this.itemType = "MCQ";
     }
 
     public String getOption1() {

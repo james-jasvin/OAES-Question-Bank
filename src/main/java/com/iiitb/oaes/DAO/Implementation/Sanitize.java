@@ -10,11 +10,11 @@ public class Sanitize implements HandlerDao {
     HandlerDao next;
 
     @Override
-    public Author handle(String loginId,String password) {
+    public Author handle(Author author) {
         System.out.println("Sanitizing LoginId ...");
         if(next != null){
-            String safe_loginId = Jsoup.clean(loginId, Safelist.basic());
-            return next.handle(safe_loginId,password);
+            author.setLoginId(Jsoup.clean(author.getLoginId(), Safelist.basic()));
+            return next.handle(author);
         }
         return null;
     }

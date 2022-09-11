@@ -24,6 +24,9 @@ public class Item implements Serializable {
     @Column(unique = true, nullable = false)
     protected String question;
 
+    @Column(nullable = false)
+    protected String itemType;
+
     @ManyToOne
     @JoinColumn(name="courseId", nullable=false)
     protected Course course;
@@ -65,5 +68,9 @@ public class Item implements Serializable {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public String getItemType() {
+        return itemType;
     }
 }

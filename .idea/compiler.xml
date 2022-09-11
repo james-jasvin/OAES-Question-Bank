@@ -6,12 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="OAES_QuestionBank" />
-        <module name="OAES_ItemBank" />
+        <module name="OAES_QuestionBank_Webapp" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="OAES_QuestionBank" target="11" />
+      <module name="OAES_QuestionBank_Webapp" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
