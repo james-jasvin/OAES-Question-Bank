@@ -1,5 +1,73 @@
-POST http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/login
-content-type: application/json
+
+POST http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/author/login
+
 {
-    "username": "john_white", "password": "John@123"
+    "loginId": "john_white", 
+    "password": "John@123"
+}
+
+###
+
+GET http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items?authorId=2
+
+###
+
+GET http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items?authorId=1
+
+
+###
+POST http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items
+
+{
+    "author": {
+        "loginId": "john_white",
+        "password": "John@123",
+        "authorId": 1
+    },
+    "item": {
+        "question": "Dummy question 3?",
+        "itemType": "MCQ",
+        "option1": "Factory Pattern",
+        "option2": "Abstract Factory Pattern",
+        "option3": "Singleton Pattern",
+        "option4": "Transfer Object Pattern",
+        "answer": 3
+    },
+    "itemType": "MCQ",
+    "courseId": 1
+}
+
+###
+
+POST http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items
+
+{
+    "author": {
+        "loginId": "alice_bob",
+        "password": "Alice@123",
+        "authorId": 2
+    },
+    "item": {
+        "question": "Dummy TF 3?",
+        "answer": false
+    },
+    "itemType": "TrueFalse",
+    "courseId": 1
+}
+
+###
+
+PUT http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items
+
+{
+    "author": {
+        "loginId": "alice_bob",
+        "password": "Alice@123",
+        "authorId": 2
+    },
+    "item": {
+        "itemId": 9,
+        "question": "Dummy TF 69?"
+    },
+    "itemType": "TrueFalse",
 }

@@ -60,7 +60,6 @@ public class Author implements Serializable {
         this.password = password;
     }
 
-    @JsonbTransient
     public List<Item> getItems() {
         return items;
     }

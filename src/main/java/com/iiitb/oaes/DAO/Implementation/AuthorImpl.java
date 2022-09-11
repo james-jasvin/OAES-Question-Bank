@@ -28,7 +28,6 @@ public class AuthorImpl implements AuthorDao {
     @Override
     public Author loginAuthor(Author author) {
         try (Session session = SessionUtil.getSession()) {
-            Transaction transaction = session.beginTransaction();
             String loginId = author.getLoginId(), password = author.getPassword();
 
             Query query = session.createQuery("from Author where loginId=:loginId");

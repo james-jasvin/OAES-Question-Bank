@@ -1,5 +1,9 @@
 package com.iiitb.oaes.Bean;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -17,6 +21,7 @@ public class Course implements Serializable {
     private String abbreviation;
 
     @OneToMany(mappedBy="course")
+    @JsonIgnore // to omit from serialization
     private List<Item> items;
 
     public Course(String name, String abbreviation) {

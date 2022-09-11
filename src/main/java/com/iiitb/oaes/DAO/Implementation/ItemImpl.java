@@ -1,6 +1,7 @@
 package com.iiitb.oaes.DAO.Implementation;
 
 import com.iiitb.oaes.Bean.*;
+import com.iiitb.oaes.DAO.AuthorDao;
 import com.iiitb.oaes.DAO.CourseDao;
 import com.iiitb.oaes.DAO.ItemDao;
 import com.iiitb.oaes.utils.SessionUtil;
@@ -18,10 +19,17 @@ public class ItemImpl implements ItemDao {
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
 
-            CourseDao courseImpl = new CourseImpl();
+            CourseDao courseDao = new CourseImpl();
+            AuthorDao authorDao = new AuthorImpl();
 
-            Course course = courseImpl.getCourseById(courseId);
-            item.setAuthor(author);
+            Author loggedInAuthor = authorDao.loginAuthor(author);
+
+            if (loggedInAuthor == null)
+                return false;
+
+            Course course = courseDao.getCourseById(courseId);
+
+            item.setAuthor(loggedInAuthor);
             item.setCourse(course);
 
             session.save(item);
