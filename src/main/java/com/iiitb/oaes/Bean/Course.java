@@ -33,6 +33,14 @@ public class Course implements Serializable {
 
     }
 
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
+    }
+
     public String getName() {
         return name;
     }

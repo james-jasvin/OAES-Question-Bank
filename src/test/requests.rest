@@ -2,8 +2,8 @@
 POST http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/author/login
 
 {
-    "loginId": "john_white", 
-    "password": "John@123"
+    "loginId": "jasvin_james", 
+    "password": "Jasvin@123"
 }
 
 ###
@@ -20,12 +20,12 @@ POST http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items
 
 {
     "author": {
-        "loginId": "john_white",
-        "password": "John@123",
+        "loginId": "jasvin_james",
+        "password": "Jasvin@123",
         "authorId": 1
     },
     "item": {
-        "question": "Dummy question 3?",
+        "question": "Dummy question 5?",
         "itemType": "MCQ",
         "option1": "Factory Pattern",
         "option2": "Abstract Factory Pattern",
@@ -43,12 +43,12 @@ POST http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items
 
 {
     "author": {
-        "loginId": "alice_bob",
-        "password": "Alice@123",
+        "loginId": "gaurav_tirodkar",
+        "password": "Gaurav@123",
         "authorId": 2
     },
     "item": {
-        "question": "Dummy TF 3?",
+        "question": "Dummy question 6?",
         "answer": false
     },
     "itemType": "TrueFalse",
@@ -61,12 +61,12 @@ PUT http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items
 
 {
     "author": {
-        "loginId": "alice_bob",
-        "password": "Alice@123",
+        "loginId": "gaurav_tirodkar",
+        "password": "Gaurav@123",
         "authorId": 2
     },
     "item": {
-        "itemId": 9,
+        "itemId": 6,
         "question": "Dummy TF 69?"
     },
     "itemType": "TrueFalse",

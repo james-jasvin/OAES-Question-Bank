@@ -7,13 +7,42 @@ import com.iiitb.oaes.DAO.Implementation.AuthorImpl;
 import com.iiitb.oaes.DAO.Implementation.CourseImpl;
 import com.iiitb.oaes.DAO.Implementation.ItemImpl;
 import com.iiitb.oaes.DAO.ItemDao;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
+/*
+    For the clearDatabase() method to work, the "hibernate.hbm2ddl.auto" property in hibernate.cfg.xml has to be set to
+    "create-drop", otherwise it will show dependency error while deleting Item table and you'll end up with empty database
+ */
 public class InitializeDB {
+    public static void clearDatabase() {
+        try (Session session = SessionUtil.getSession()) {
+            Transaction transaction = session.beginTransaction();
+
+            Query query = session.createQuery("delete from Item");
+            query.executeUpdate();
+
+            query = session.createQuery("delete from Course");
+            query.executeUpdate();
+
+            query = session.createQuery("delete from Author");
+            query.executeUpdate();
+            transaction.commit();
+        }
+        catch (HibernateException exception) {
+            System.out.print(exception.getLocalizedMessage());
+        }
+    }
+
     public static void main(String[] args) {
+        clearDatabase();
 
         List<List<String>> authors = Arrays.asList(
                 Arrays.asList("Jasvin James","jasvin_james","Jasvin@123"),
