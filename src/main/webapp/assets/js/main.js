@@ -5,9 +5,8 @@ const baseURL = "http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api
 
 function onLoginPageLoad() {
     // If user was already logged in and data is retained in localStorage, then directly take user to Bills.html
-    if (window.localStorage.hasOwnProperty("authorId")) {
+    if (window.localStorage.hasOwnProperty("authorId"))
         location.replace("bills.html");
-    }
 
     let form = document.getElementById("loginForm");
 
@@ -44,7 +43,6 @@ function onLoginPageLoad() {
         }
 
         const loggedInAuthor = await response.json();
-        console.log(loggedInAuthor);
 
         Swal.fire({
             title: 'Login',
@@ -62,7 +60,18 @@ function onLoginPageLoad() {
     }
 }
 
-function onBillsPageLoad() {
+async function onBillsPageLoad() {
+    // Fetch the Author's Items
+    const authorId = parseInt(window.localStorage.getItem("authorId"));
+
+    const responseItems = await fetch(baseURL + "items?authorId=" + authorId, {
+        method: "GET"
+    })
+
+    const authorItems = await responseItems.json();
+    console.log(authorItems);
+}
+
 //     billList = null;
 //     paymentDictionary = {};
 //
@@ -120,7 +129,7 @@ function onBillsPageLoad() {
 //                 billList = bills;
 //             }
 //         });
-}
+// }
 //
 // function calculate(billId) {
 //     paymentDictionary[billId] = parseInt(document.getElementById("payment" + billId).value);
