@@ -13,15 +13,15 @@ import java.util.List;
 
 public class CourseImpl implements CourseDao {
     @Override
-    public boolean createCourse(Course course) {
+    public Course createCourse(Course course) {
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
             session.save(course);
             transaction.commit();
-            return true;
+            return course;
         } catch (HibernateException exception) {
             System.out.print(exception.getLocalizedMessage());
-            return false;
+            return null;
         }
     }
 

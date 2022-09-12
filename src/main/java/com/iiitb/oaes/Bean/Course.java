@@ -63,6 +63,6 @@ public class Course implements Serializable {
                 "Id:" + courseId +
                 ", Name:" + name +
                 ", Abbreviation:" + abbreviation +
-                " }";
+                " }" + items;
     }
 }

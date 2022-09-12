@@ -20,10 +20,10 @@ public class Driver {
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
 
-            Query query = session.createQuery("delete from Course");
+            Query query = session.createQuery("delete from Item");
             query.executeUpdate();
 
-            query = session.createQuery("delete from Item");
+            query = session.createQuery("delete from Course");
             query.executeUpdate();
 
             query = session.createQuery("delete from Author");

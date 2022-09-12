@@ -13,15 +13,16 @@ import java.util.List;
 
 public class AuthorImpl implements AuthorDao {
     @Override
-    public boolean registerAuthor(Author author) {
+    public Author registerAuthor(Author author) {
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
             session.save(author);
             transaction.commit();
-            return true;
-        } catch (HibernateException exception) {
+            return author;
+        }
+        catch (HibernateException exception) {
             System.out.print(exception.getLocalizedMessage());
-            return false;
+            return null;
         }
     }
 
