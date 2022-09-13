@@ -2,6 +2,7 @@ package com.iiitb.oaes.DAO.Implementation;
 
 import com.iiitb.oaes.Bean.Author;
 import com.iiitb.oaes.DAO.AuthorDao;
+import com.iiitb.oaes.utils.CORUtil;
 import com.iiitb.oaes.utils.SessionUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
