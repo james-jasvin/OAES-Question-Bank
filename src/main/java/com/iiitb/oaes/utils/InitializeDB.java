@@ -6,6 +6,7 @@ import com.iiitb.oaes.DAO.CourseDao;
 import com.iiitb.oaes.DAO.Implementation.AuthorImpl;
 import com.iiitb.oaes.DAO.Implementation.CourseImpl;
 import com.iiitb.oaes.DAO.Implementation.ItemImpl;
+import com.iiitb.oaes.DAO.Implementation.ProxyItemImpl;
 import com.iiitb.oaes.DAO.ItemDao;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -99,7 +100,7 @@ public class InitializeDB {
         );
 
         AuthorDao authorDao = new AuthorImpl();
-        ItemDao itemDao = new ItemImpl();
+        ItemDao itemDao = new ProxyItemImpl();
         CourseDao courseDao = new CourseImpl();
 
         List<Course> courseList = new ArrayList<>();

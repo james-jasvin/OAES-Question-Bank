@@ -6,14 +6,14 @@ import com.iiitb.oaes.Bean.Author;
 import com.iiitb.oaes.Bean.Item;
 import com.iiitb.oaes.Bean.MCQItem;
 import com.iiitb.oaes.Bean.TrueFalseItem;
-import com.iiitb.oaes.DAO.Implementation.ItemImpl;
+import com.iiitb.oaes.DAO.Implementation.ProxyItemImpl;
 import com.iiitb.oaes.DAO.ItemDao;
 import org.json.JSONObject;
 
 import java.util.List;
 
 public class ItemService {
-    ItemDao itemDao = new ItemImpl();
+    ItemDao itemDao = new ProxyItemImpl();
     ObjectMapper objectMapper = new ObjectMapper();
 
     public List<Item> getItems(Integer authorId){

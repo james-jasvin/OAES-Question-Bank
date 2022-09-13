@@ -156,9 +156,8 @@ async function handleMCQItemCreation(event, form) {
         }
     })
 
-    // If item creation failed, then non-200 status code will be returned
-    // NOTE: This should be updated to non-201 status code later on
-    if (response.status !== 200) {
+    // If item creation failed, then non-201 status code will be returned
+    if (response.status !== 201) {
         Swal.fire({
             title: 'Item Creation',
             text: 'Item Creation Failed!',
@@ -208,9 +207,28 @@ async function handleTrueFalseItemCreation(event, form) {
         }
     })
 
-    // If item creation failed, then non-200 status code will be returned
-    // NOTE: This should be updated to non-201 status code later on
-    if (response.status !== 200) {
+    // If item creation failed, then non-201 status code will be returned
+    if (response.status === 500) {
+        Swal.fire({
+            title: 'Item Creation',
+            text: 'Item Creation Failed! Possible Duplicate Question',
+            icon: 'error',
+            confirmButtonText: 'Okay'
+        });
+
+        return;
+    }
+    else if (response.status === 400) {
+        Swal.fire({
+            title: 'Item Creation',
+            text: 'Item Creation Failed! Unauthorized to access Question',
+            icon: 'error',
+            confirmButtonText: 'Okay'
+        });
+
+        return;
+    }
+    else if (response.status !== 201) {
         Swal.fire({
             title: 'Item Creation',
             text: 'Item Creation Failed!',
@@ -276,8 +294,28 @@ async function handleMCQItemUpdate(event, form) {
         }
     })
 
-    // If item creation failed, then non-204 status code will be returned
-    if (response.status !== 204) {
+    // If item update failed, then non-204 status code will be returned
+    if (response.status === 500) {
+        Swal.fire({
+            title: 'Item Update',
+            text: 'Item Update Failed! Possible Duplicate Question',
+            icon: 'error',
+            confirmButtonText: 'Okay'
+        });
+
+        return;
+    }
+    else if (response.status === 400) {
+        Swal.fire({
+            title: 'Item Update',
+            text: 'Item Update Failed! Unauthorized to access Question or Invalid Item ID',
+            icon: 'error',
+            confirmButtonText: 'Okay'
+        });
+
+        return;
+    }
+    else if (response.status !== 204) {
         Swal.fire({
             title: 'Item Update',
             text: 'Item Update Failed!',
@@ -340,8 +378,28 @@ async function handleTrueFalseItemUpdate(event, form) {
         }
     })
 
-    // If item creation failed, then non-204 status code will be returned
-    if (response.status !== 204) {
+    // If item update failed, then non-204 status code will be returned
+    if (response.status === 500) {
+        Swal.fire({
+            title: 'Item Update',
+            text: 'Item Update Failed! Possible Duplicate Question',
+            icon: 'error',
+            confirmButtonText: 'Okay'
+        });
+
+        return;
+    }
+    else if (response.status === 400) {
+        Swal.fire({
+            title: 'Item Update',
+            text: 'Item Update Failed! Unauthorized to access Question or Invalid Item ID',
+            icon: 'error',
+            confirmButtonText: 'Okay'
+        });
+
+        return;
+    }
+    else if (response.status !== 204) {
         Swal.fire({
             title: 'Item Update',
             text: 'Item Update Failed!',

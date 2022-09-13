@@ -8,6 +8,9 @@ public class CachePair {
     List<Item> items;
     Boolean needReset;
 
+    public CachePair() {
+    }
+
     public CachePair(List<Item> items, Boolean needReset) {
         this.items = items;
         this.needReset = needReset;
