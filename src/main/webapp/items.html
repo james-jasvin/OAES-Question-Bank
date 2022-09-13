@@ -17,7 +17,7 @@
     />
 </head>
 
-<body onload="onBillsPageLoad()">
+<body onload="onItemsPageLoad()">
     <nav class="navbar navbar-dark bg-dark text-light">
         <div class="container-fluid navbar-brand text-center">
             <img src="assets/images/IIITBLogo.svg" alt="Gyan-Uttamam" class="mx-auto d-block"/>
@@ -32,37 +32,50 @@
 
     </nav>
 
-    <table id="billDataTable" class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th id="billsHeading" colspan="5" style="font-size: 25px;"></th>
-            </tr>
-            <tr>
-                <th>Bill Id</th>
-                <th>Due Amount</th>
-                <th>Bill Date</th>
-                <th>Description</th>
-                <th>Enter Amount to Pay</th>
-            </tr>
-        </thead>
+    <div id="itemDashboard">
+        <h1>Items Dashboard</h1>
+        <h2>MCQ Items</h2>
+        <div id="mcqItemsDashboard"></div>
+        <h2>True False Items</h2>
+        <div id="trueFalseItemsDashboard"></div>
+    </div>
 
-        <tbody id="billDataTbody" class="table-hover">
+<!--    <div id="mcqItemCreationForm">-->
+<!--        -->
+<!--        -->
+<!--    </div>-->
 
-        </tbody>
+<!--    <table id="billDataTable" class="table">-->
+<!--        <thead class="thead-dark">-->
+<!--            <tr>-->
+<!--                <th id="billsHeading" colspan="5" style="font-size: 25px;"></th>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <th>Bill Id</th>-->
+<!--                <th>Due Amount</th>-->
+<!--                <th>Bill Date</th>-->
+<!--                <th>Description</th>-->
+<!--                <th>Enter Amount to Pay</th>-->
+<!--            </tr>-->
+<!--        </thead>-->
 
-        <tfoot>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td class="text-align-center pt-3">
-                    Total Amount to Pay: <div id="totalAmount" style="display: inline">0</div> <br>
-                    <button type="submit" class="btn btn-primary" onclick="payment()" id="paymentButton">Pay</button>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
+<!--        <tbody id="billDataTbody" class="table-hover">-->
+
+<!--        </tbody>-->
+
+<!--        <tfoot>-->
+<!--            <tr>-->
+<!--                <td></td>-->
+<!--                <td></td>-->
+<!--                <td></td>-->
+<!--                <td></td>-->
+<!--                <td class="text-align-center pt-3">-->
+<!--                    Total Amount to Pay: <div id="totalAmount" style="display: inline">0</div> <br>-->
+<!--                    <button type="submit" class="btn btn-primary" onclick="payment()" id="paymentButton">Pay</button>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--        </tfoot>-->
+<!--    </table>-->
 
 
 

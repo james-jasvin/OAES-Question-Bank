@@ -1,12 +1,11 @@
-let billList = null;
-let paymentDictionary = {};
+let mcqItems = [], trueFalseItems = [];
 
 const baseURL = "http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/"
 
 function onLoginPageLoad() {
     // If user was already logged in and data is retained in localStorage, then directly take user to Bills.html
     if (window.localStorage.hasOwnProperty("authorId"))
-        location.replace("bills.html");
+        location.replace("items.html");
 
     let form = document.getElementById("loginForm");
 
@@ -56,11 +55,11 @@ function onLoginPageLoad() {
         window.localStorage.setItem("password", loggedInAuthor.password);
         window.localStorage.setItem("name", loggedInAuthor.name);
 
-        location.replace("bills.html");
+        location.replace("items.html");
     }
 }
 
-async function onBillsPageLoad() {
+async function onItemsPageLoad() {
     // Fetch the Author's Items
     const authorId = parseInt(window.localStorage.getItem("authorId"));
 
@@ -70,6 +69,58 @@ async function onBillsPageLoad() {
 
     const authorItems = await responseItems.json();
     console.log(authorItems);
+
+    authorItems.forEach(item => {
+        if (item.itemType === "MCQ")
+            mcqItems.push(item);
+        else if (item.itemType === "TrueFalse")
+            trueFalseItems.push(item);
+    });
+
+    let mcqDashboard = document.getElementById("mcqItemsDashboard");
+    let trueFalseDashboard = document.getElementById("trueFalseItemsDashboard");
+
+    if (mcqItems.length === 0)
+        mcqDashboard.innerHTML = "No MCQ Items Created";
+    else {
+        mcqDashboard.innerHTML = "";
+
+        mcqItems.forEach(mcqItem => {
+            mcqDashboard.innerHTML += getMCQItemHTML(mcqItem);
+        });
+    }
+
+    if (trueFalseItems.length === 0)
+        trueFalseDashboard.innerHTML = "No True False Items Created";
+    else {
+        trueFalseDashboard.innerHTML = "";
+
+        trueFalseItems.forEach(trueFalseItem => {
+            trueFalseDashboard.innerHTML += getTrueFalseItemHTML(trueFalseItem);
+        });
+    }
+}
+
+function getMCQItemHTML(mcqItem) {
+    return "<div class='mcqItem'>" +
+            "Item ID: " + mcqItem.itemId + "<br>" +
+            "Question: " + mcqItem.question + "<br>" +
+            "Option 1: " + mcqItem.option1 + "<br>" +
+            "Option 2: " + mcqItem.option2 + "<br>" +
+            "Option 3: " + mcqItem.option3 + "<br>" +
+            "Option 4: " + mcqItem.option4 + "<br>" +
+            "Correct Option: " + mcqItem.answer + "<br>" +
+            "Course Name: " + mcqItem.course.name +
+        "</div><br>";
+}
+
+function getTrueFalseItemHTML(trueFalseItem) {
+    return "<div class='trueFalseItem'>" +
+        "Item ID: " + trueFalseItem.itemId + "<br>" +
+        "Question: " + trueFalseItem.question + "<br>" +
+        "Correct Answer: " + trueFalseItem.answer + "<br>" +
+        "Course Name: " + trueFalseItem.course.name +
+        "</div><br>";
 }
 
 //     billList = null;
