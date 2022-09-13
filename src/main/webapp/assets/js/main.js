@@ -8,55 +8,55 @@ function onLoginPageLoad() {
         location.replace("items.html");
 
     let form = document.getElementById("loginForm");
+}
 
-    form.onsubmit = async (event) => {
-        event.preventDefault();
+async function handleLogin(event, form) {
+    event.preventDefault();
 
-        let loginId = document.getElementById("loginId").value;
-        let password = document.getElementById("password").value;
+    let loginId = document.getElementById("loginId").value;
+    let password = document.getElementById("password").value;
 
-        let author = {
-            "loginId": loginId,
-            "password": password
+    let author = {
+        "loginId": loginId,
+        "password": password
+    }
+
+    const response = await fetch(baseURL + "author/login", {
+        method: "POST",
+        body: JSON.stringify(author),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
         }
+    })
 
-        const response = await fetch(baseURL + "author/login", {
-            method: "POST",
-            body: JSON.stringify(author),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-            }
-        })
-
-        // If login failed, then non-200 status code will be returned
-        if (response.status !== 200) {
-            Swal.fire({
-                title: 'Login',
-                text: 'Login Failed!',
-                icon: 'error',
-                confirmButtonText: 'Okay'
-            });
-
-            form.reset();
-            return;
-        }
-
-        const loggedInAuthor = await response.json();
-
+    // If login failed, then non-200 status code will be returned
+    if (response.status !== 200) {
         Swal.fire({
             title: 'Login',
-            text: 'Login Successful!',
-            icon: 'success',
+            text: 'Login Failed!',
+            icon: 'error',
             confirmButtonText: 'Okay'
-        })
+        });
 
-        window.localStorage.setItem("authorId", loggedInAuthor.authorId);
-        window.localStorage.setItem("loginId", loggedInAuthor.loginId);
-        window.localStorage.setItem("password", loggedInAuthor.password);
-        window.localStorage.setItem("name", loggedInAuthor.name);
-
-        location.replace("items.html");
+        form.reset();
+        return;
     }
+
+    const loggedInAuthor = await response.json();
+
+    Swal.fire({
+        title: 'Login',
+        text: 'Login Successful!',
+        icon: 'success',
+        confirmButtonText: 'Okay'
+    })
+
+    window.localStorage.setItem("authorId", loggedInAuthor.authorId);
+    window.localStorage.setItem("loginId", loggedInAuthor.loginId);
+    window.localStorage.setItem("password", loggedInAuthor.password);
+    window.localStorage.setItem("name", loggedInAuthor.name);
+
+    location.replace("items.html");
 }
 
 async function onItemsPageLoad() {
@@ -122,6 +122,247 @@ function getTrueFalseItemHTML(trueFalseItem) {
         "Course Name: " + trueFalseItem.course.name +
         "</div><br>";
 }
+
+async function handleMCQItemCreation(event, form) {
+    event.preventDefault();
+
+    let question = document.getElementById("createQuestionInput").value;
+    let option1 = document.getElementById("createOption1").value;
+    let option2 = document.getElementById("createOption2").value;
+    let option3 = document.getElementById("createOption3").value;
+    let option4 = document.getElementById("createOption4").value;
+    let answer = parseInt(document.getElementById("createAnswer").value);
+    let courseId = parseInt(document.getElementById("createCourseId").value);
+
+    const authorId = parseInt(window.localStorage.getItem("authorId"));
+    const loginId = window.localStorage.getItem("loginId");
+    const password = window.localStorage.getItem("password");
+
+    let author = { authorId, loginId, password }
+    let item = { question, option1, option2, option3, option4, answer }
+
+    let itemCreationJSON = {
+        author,
+        item,
+        courseId,
+        itemType: "MCQ"
+    }
+
+    const response = await fetch(baseURL + "items", {
+        method: "POST",
+        body: JSON.stringify(itemCreationJSON),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        }
+    })
+
+    // If item creation failed, then non-200 status code will be returned
+    // NOTE: This should be updated to non-201 status code later on
+    if (response.status !== 200) {
+        Swal.fire({
+            title: 'Item Creation',
+            text: 'Item Creation Failed!',
+            icon: 'error',
+            confirmButtonText: 'Okay'
+        });
+
+        return;
+    }
+
+    Swal.fire({
+        title: 'Item Creation',
+        text: 'Item Creation Successful, Reload to View Changes!',
+        icon: 'success',
+        confirmButtonText: 'Okay'
+    })
+
+    form.reset()
+}
+
+async function handleTrueFalseItemCreation(event, form) {
+    event.preventDefault();
+
+    let question = document.getElementById("createQuestionInputTF").value;
+    let answer = parseInt(document.getElementById("createAnswerTF").value) !== 0;
+    let courseId = parseInt(document.getElementById("createCourseIdTF").value);
+
+    const authorId = parseInt(window.localStorage.getItem("authorId"));
+    const loginId = window.localStorage.getItem("loginId");
+    const password = window.localStorage.getItem("password");
+
+    let author = { authorId, loginId, password }
+    let item = { question, answer }
+
+    let itemCreationJSON = {
+        author,
+        item,
+        courseId,
+        itemType: "TrueFalse"
+    }
+
+    const response = await fetch(baseURL + "items", {
+        method: "POST",
+        body: JSON.stringify(itemCreationJSON),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        }
+    })
+
+    // If item creation failed, then non-200 status code will be returned
+    // NOTE: This should be updated to non-201 status code later on
+    if (response.status !== 200) {
+        Swal.fire({
+            title: 'Item Creation',
+            text: 'Item Creation Failed!',
+            icon: 'error',
+            confirmButtonText: 'Okay'
+        });
+
+        return;
+    }
+
+    Swal.fire({
+        title: 'Item Creation',
+        text: 'Item Creation Successful, Reload to View Changes!',
+        icon: 'success',
+        confirmButtonText: 'Okay'
+    })
+
+    form.reset()
+}
+
+async function handleMCQItemUpdate(event, form) {
+    event.preventDefault();
+
+    let itemId = document.getElementById("updateItemId").value;
+    let question = document.getElementById("updateQuestionInput").value;
+    let option1 = document.getElementById("updateOption1").value;
+    let option2 = document.getElementById("updateOption2").value;
+    let option3 = document.getElementById("updateOption3").value;
+    let option4 = document.getElementById("updateOption4").value;
+    let answer = parseInt(document.getElementById("updateAnswer").value);
+
+    if (question === "")
+        question = null
+    if (option1 === "")
+        option1 = null
+    if (option2 === "")
+        option2 = null
+    if (option3 === "")
+        option3 = null
+    if (option4 === "")
+        option4 = null
+    if (answer == "" || answer === -1)
+        answer = null
+
+    const authorId = parseInt(window.localStorage.getItem("authorId"));
+    const loginId = window.localStorage.getItem("loginId");
+    const password = window.localStorage.getItem("password");
+
+    let author = { authorId, loginId, password }
+    let item = { itemId, question, option1, option2, option3, option4, answer }
+
+    let itemUpdateJSON = {
+        author,
+        item,
+        itemType: "MCQ"
+    }
+
+    const response = await fetch(baseURL + "items", {
+        method: "PUT",
+        body: JSON.stringify(itemUpdateJSON),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        }
+    })
+
+    // If item creation failed, then non-204 status code will be returned
+    if (response.status !== 204) {
+        Swal.fire({
+            title: 'Item Update',
+            text: 'Item Update Failed!',
+            icon: 'error',
+            confirmButtonText: 'Okay'
+        });
+
+        return;
+    }
+
+    form.reset()
+
+    Swal.fire({
+        title: 'Item Update',
+        text: 'Item Update Successful, Reload to View Changes!',
+        icon: 'success',
+        confirmButtonText: 'Okay'
+    })
+}
+
+async function handleTrueFalseItemUpdate(event, form) {
+    event.preventDefault();
+
+    let itemId = document.getElementById("updateItemIdTF").value;
+    let question = document.getElementById("updateQuestionInputTF").value;
+    let answer = document.getElementById("updateAnswerTF").value;
+
+    if (question === "")
+        question = null
+
+    if (answer === "")
+        answer = null
+    else {
+        answer = parseInt(answer)
+
+        if (answer === -1)
+            answer = null
+        else
+            answer = answer !== 0
+    }
+
+    const authorId = parseInt(window.localStorage.getItem("authorId"));
+    const loginId = window.localStorage.getItem("loginId");
+    const password = window.localStorage.getItem("password");
+
+    let author = { authorId, loginId, password }
+    let item = { itemId, question, answer }
+
+    let itemUpdateJSON = {
+        author,
+        item,
+        itemType: "TrueFalse"
+    }
+
+    const response = await fetch(baseURL + "items", {
+        method: "PUT",
+        body: JSON.stringify(itemUpdateJSON),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        }
+    })
+
+    // If item creation failed, then non-204 status code will be returned
+    if (response.status !== 204) {
+        Swal.fire({
+            title: 'Item Update',
+            text: 'Item Update Failed!',
+            icon: 'error',
+            confirmButtonText: 'Okay'
+        });
+
+        return;
+    }
+
+    form.reset()
+
+    Swal.fire({
+        title: 'Item Update',
+        text: 'Item Update Successful, Reload to View Changes!',
+        icon: 'success',
+        confirmButtonText: 'Okay'
+    })
+}
+
+
 
 //     billList = null;
 //     paymentDictionary = {};

@@ -14,6 +14,8 @@ GET http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items?author
 
 GET http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items?authorId=1
 
+###
+GET http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items?authorId=3
 
 ###
 POST http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items
@@ -26,7 +28,6 @@ POST http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items
     },
     "item": {
         "question": "Dummy question 5?",
-        "itemType": "MCQ",
         "option1": "Factory Pattern",
         "option2": "Abstract Factory Pattern",
         "option3": "Singleton Pattern",
@@ -66,7 +67,7 @@ PUT http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items
         "authorId": 2
     },
     "item": {
-        "itemId": 6,
+        "itemId": 7,
         "question": "Dummy TF 69?"
     },
     "itemType": "TrueFalse",

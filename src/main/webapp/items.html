@@ -32,7 +32,7 @@
 
     </nav>
 
-    <div id="itemDashboard">
+    <div id="itemDashboard" class="mb-5">
         <h1>Items Dashboard</h1>
         <h2>MCQ Items</h2>
         <div id="mcqItemsDashboard"></div>
@@ -40,10 +40,125 @@
         <div id="trueFalseItemsDashboard"></div>
     </div>
 
-<!--    <div id="mcqItemCreationForm">-->
-<!--        -->
-<!--        -->
-<!--    </div>-->
+    <hr>
+
+    <div id="itemCreationDashboard">
+        <h1>Item Creation Dashboard</h1>
+        <div id="mcqItemCreationDashboard">
+            <h2>MCQ Item Creation Form</h2>
+            <form id="mcqItemCreationForm" onsubmit="return handleMCQItemCreation(event, this)">
+                <label for="createQuestionInput">Enter Question:</label>
+                <input id="createQuestionInput" name="createQuestionInput" type="text" placeholder="Question" required>
+                <br>
+
+                <label for="createOption1">Enter Option 1:</label>
+                <input id="createOption1" name="createOption1" type="text" placeholder="Option 1" required>
+                <br>
+
+                <label for="createOption2">Enter Option 2:</label>
+                <input id="createOption2" name="createOption2" type="text" placeholder="Option 2" required>
+                <br>
+
+                <label for="createOption3">Enter Option 3:</label>
+                <input id="createOption3" name="createOption3" type="text" placeholder="Option 3" required>
+                <br>
+
+                <label for="createOption4">Enter Option 4:</label>
+                <input id="createOption4" name="createOption4" type="text" placeholder="Option 4" required>
+                <br>
+
+                <label for="createAnswer">Enter Correct Answer:</label>
+                <input id="createAnswer" name="createAnswer" type="number" placeholder="Correct Answer" required>
+                <br>
+
+                <label for="createCourseId">Enter Course ID:</label>
+                <input id="createCourseId" name="createCourseId" type="number" placeholder="Course ID" required>
+                <br>
+
+                <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </form>
+        </div>
+        <div id="trueFalseItemCreationDashboard" class="mt-5">
+            <h2>True False Item Creation Form</h2>
+            <form id="trueFalseItemCreationForm" onsubmit="return handleTrueFalseItemCreation(event, this)">
+                <label for="createQuestionInputTF">Enter Question:</label>
+                <input id="createQuestionInputTF" name="createQuestionInputTF" type="text" placeholder="Question" required>
+                <br>
+
+                <label for="createAnswerTF">Enter Correct Answer:</label>
+                <input id="createAnswerTF" name="createAnswerTF" type="number" placeholder="0 for False, 1 for True" required>
+                <br>
+
+                <label for="createCourseIdTF">Enter Course ID:</label>
+                <input id="createCourseIdTF" name="createCourseIdTF" type="number" placeholder="Course ID" required>
+                <br>
+
+                <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <hr>
+
+    <div id="itemUpdateDashboard" class="mt-5">
+        <h1>Item Update Dashboard</h1>
+        Leave the corresponding Item field empty if that field is to be left unchanged for the specified Item
+
+        <div id="mcqItemUpdateDashboard" class="mt-3">
+            <h2>MCQ Item Update Form</h2>
+
+            <form id="mcqItemUpdateForm" onsubmit="return handleMCQItemUpdate(event, this)">
+                <label for="updateItemId">Enter Item ID:</label>
+                <input id="updateItemId" name="updateItemId" type="text" placeholder="Enter Item ID of Question to Update" required>
+                <br>
+
+                <label for="updateQuestionInput">Enter New Question:</label>
+                <input id="updateQuestionInput" name="updateQuestionInput" type="text" placeholder="Question">
+                <br>
+
+                <label for="updateOption1">Enter New Option 1:</label>
+                <input id="updateOption1" name="updateOption1" type="text" placeholder="Option 1">
+                <br>
+
+                <label for="updateOption2">Enter New Option 2:</label>
+                <input id="updateOption2" name="updateOption2" type="text" placeholder="Option 2">
+                <br>
+
+                <label for="updateOption3">Enter New Option 3:</label>
+                <input id="updateOption3" name="updateOption3" type="text" placeholder="Option 3">
+                <br>
+
+                <label for="updateOption4">Enter New Option 4:</label>
+                <input id="updateOption4" name="updateOption4" type="text" placeholder="Option 4">
+                <br>
+
+                <label for="updateAnswer">Enter New Correct Answer:</label>
+                <input id="updateAnswer" name="updateAnswer" type="number" placeholder="Correct Answer">
+                <br>
+
+                <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </form>
+        </div>
+
+        <div id="trueFalseItemUpdateDashboard" class="mt-5">
+            <h2>True False Item Update Form</h2>
+            <form id="trueFalseItemUpdateForm" onsubmit="return handleTrueFalseItemUpdate(event, this)">
+                <label for="updateItemIdTF">Enter Item ID:</label>
+                <input id="updateItemIdTF" name="updateItemIdTF" type="text" placeholder="Enter Item ID of Question to Update" required>
+                <br>
+
+                <label for="updateQuestionInputTF">Enter New Question:</label>
+                <input id="updateQuestionInputTF" name="updateQuestionInputTF" type="text" placeholder="Question">
+                <br>
+
+                <label for="updateAnswerTF">Enter New Correct Answer:</label>
+                <input id="updateAnswerTF" name="updateAnswerTF" type="number" placeholder="0 for False, 1 for True, -1 to Skip">
+                <br>
+
+                <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </form>
+        </div>
+    </div>
 
 <!--    <table id="billDataTable" class="table">-->
 <!--        <thead class="thead-dark">-->

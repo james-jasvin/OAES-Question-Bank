@@ -28,7 +28,7 @@ public class ItemController {
         Boolean itemCreation = new ItemService().createItem(itemCreationJSON);
 
         if (itemCreation)
-            return Response.ok().build();
+            return Response.status(201).build();
         else
             return Response.status(400).build();
     }
