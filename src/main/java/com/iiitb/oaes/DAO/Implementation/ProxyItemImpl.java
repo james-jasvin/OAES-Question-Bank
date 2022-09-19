@@ -27,18 +27,17 @@ public class ProxyItemImpl implements ItemDao {
 
     @Override
     public List<Item> getItems(Integer authorId) {
-        if(cacheItems.containsKey(authorId) && !cacheItems.get(authorId).getNeedReset()){
-            System.out.println("Found in Cache");
-            CachePair pair_items= cacheItems.get(authorId);
-            return pair_items.getItems();
+        if (cacheItems.containsKey(authorId) && !cacheItems.get(authorId).getNeedReset()) {
+            CachePair pairItems= cacheItems.get(authorId);
+            return pairItems.getItems();
         }
 
         List<Item> items;
         try {
             items = itemImpl.getItems(authorId);
-            CachePair fetched_data= new CachePair(items, false);
+            CachePair fetchedData = new CachePair(items, false);
 
-            cacheItems.put(authorId, fetched_data);
+            cacheItems.put(authorId, fetchedData);
             return items;
         }
         catch (HibernateException exception) {

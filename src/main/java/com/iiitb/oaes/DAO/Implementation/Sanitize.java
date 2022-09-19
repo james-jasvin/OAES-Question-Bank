@@ -11,8 +11,7 @@ public class Sanitize implements HandlerDao {
 
     @Override
     public Author handle(Author author) {
-        System.out.println("Sanitizing Login Id ...");
-        if(next != null){
+        if (next != null) {
             author.setLoginId(Jsoup.clean(author.getLoginId(), Safelist.basic()));
             return next.handle(author);
         }

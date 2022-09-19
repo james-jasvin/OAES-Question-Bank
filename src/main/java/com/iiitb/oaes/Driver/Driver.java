@@ -146,9 +146,10 @@ public class Driver {
         System.out.println("-------------------------------------------\nDisplaying Courses\n-------------------------------------------");
         List<Course> savedCourses = courseDao.getCourses();
 
-        for (Course c: savedCourses)
+        for (Course c: savedCourses) {
+            c.setItems(null);
             System.out.println(c);
-
+        }
     }
 
     public static void displayItems(ItemDao itemImpl, Author author) {
@@ -262,10 +263,10 @@ public class Driver {
     }
 
     public static void main(String[] args) {
-        clearDatabase();
-        initializeAuthorDatabase();
-        initializeCourseDatabase();
-        initializeItemDatabase();
+//        clearDatabase();
+//        initializeAuthorDatabase();
+//        initializeCourseDatabase();
+//        initializeItemDatabase();
 
         // Login Author
         // Save logged in author object as Driver class member and use it to pass in authorization parameters for later

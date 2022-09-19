@@ -7,11 +7,8 @@ public class InitiateLogin implements HandlerDao {
     HandlerDao next;
     @Override
     public Author handle(Author author) {
-        if(author.getLoginId().equals("") || author.getPassword().equals("")){
-            System.out.println("Login Id or Password is missing");
+        if (author.getLoginId().equals("") || author.getPassword().equals(""))
             return null;
-        }
-        System.out.println("Initiating Login Sequence ...");
         if (next != null)
             return next.handle(author);
         return null;

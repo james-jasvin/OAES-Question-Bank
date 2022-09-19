@@ -19,7 +19,6 @@ public class Login implements HandlerDao {
 
     @Override
     public Author handle(Author author) {
-        System.out.println("Logging user in ...");
         return authorDao.loginAuthor(author);
     }
 

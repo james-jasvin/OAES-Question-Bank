@@ -29,6 +29,11 @@ public class ItemImpl implements ItemDao {
 
             Course course = courseDao.getCourseById(courseId);
 
+            // Trim the question to prevent empty string questions from being inserted
+            item.setQuestion(item.getQuestion().trim());
+
+            // Must similarly trim other attributes later
+
             item.setAuthor(loggedInAuthor);
             item.setCourse(course);
 
