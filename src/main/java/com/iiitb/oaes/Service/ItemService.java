@@ -16,7 +16,7 @@ public class ItemService {
     ItemDao itemDao = new ProxyItemImpl();
     ObjectMapper objectMapper = new ObjectMapper();
 
-    public List<Item> getItems(Integer authorId){
+    public List<Item> getItems(Integer authorId) {
         List<Item> itemList = itemDao.getItems(authorId);
 
         // Removing author reference from each item in order to kill cyclic references
