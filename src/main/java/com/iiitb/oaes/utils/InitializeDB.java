@@ -19,6 +19,8 @@ import java.util.List;
 
 
 /*
+    Utility class for setting the Database up with entries in all the tables
+
     For the clearDatabase() method to work, the "hibernate.hbm2ddl.auto" property in hibernate.cfg.xml has to be set to
     "create-drop", otherwise it will show dependency error while deleting Item table and you'll end up with empty database
  */

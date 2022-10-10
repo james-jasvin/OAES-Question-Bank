@@ -4,6 +4,7 @@ import com.iiitb.oaes.Bean.*;
 import com.iiitb.oaes.DAO.AuthorDao;
 import com.iiitb.oaes.DAO.CourseDao;
 import com.iiitb.oaes.DAO.ItemDao;
+import com.iiitb.oaes.utils.CORUtil;
 import com.iiitb.oaes.utils.SessionUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -14,20 +15,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemImpl implements ItemDao {
+    CORUtil COR = CORUtil.getCOR();
+
+    /*
+        Create a new Item with the specified Author and Course (indicated by CourseId) in the Database
+        - Initiate the Login COR to ensure that Author credentials are valid
+        - Fetch Course DB object that's specified by the Course Id in the input
+        - Set Author and Course for the created Item and insert the Item into the Database
+    */
     @Override
     public boolean createItem(Item item, Author author, Integer courseId) {
         try (Session session = SessionUtil.getSession()) {
             Transaction transaction = session.beginTransaction();
 
             CourseDao courseDao = new CourseImpl();
-            AuthorDao authorDao = new AuthorImpl();
 
-            Author loggedInAuthor = authorDao.loginAuthor(author);
-
+            Author loggedInAuthor = COR.initiateCOR(author);
             if (loggedInAuthor == null)
                 return false;
 
             Course course = courseDao.getCourseById(courseId);
+            // If invalid courseId specified which is why course is null, item creation fails
+            if (course == null)
+                return false;
 
             // Trim the question to prevent empty string questions from being inserted
             item.setQuestion(item.getQuestion().trim());
@@ -47,6 +57,9 @@ public class ItemImpl implements ItemDao {
         }
     }
 
+    /*
+        Get all Items of the specified Author via AuthorId in the input data
+    */
     @Override
     public List<Item> getItems(Integer authorId) {
         Session session = SessionUtil.getSession();
@@ -68,6 +81,14 @@ public class ItemImpl implements ItemDao {
         }
     }
 
+    /*
+        Update an existing Item with the details specified in the input
+        If a field is to be left unchanged, that field will be set as null in the input
+
+        - Fetch the database Item
+        - Set all the fields in the DB Item from the updatedItem (input data) if the corresponding field is non-null
+        - For this you need separate utility methods for handling each type of Item, MCQ/TrueFalse/etc.
+    */
     @Override
     public boolean updateItem(Item updatedItem, Integer authorId) {
         try (Session session = SessionUtil.getSession()) {
@@ -82,6 +103,7 @@ public class ItemImpl implements ItemDao {
 
             Item dbItem = (Item) query.list().get(0);
 
+            // Question is common attribute to all Items, so its handled here
             if (updatedItem.getQuestion() != null)
                 dbItem.setQuestion(updatedItem.getQuestion());
 
@@ -105,6 +127,9 @@ public class ItemImpl implements ItemDao {
             return false;
         }
     }
+
+    // Only update those fields in dbItem which are non-NULL in updatedItem
+    // Same thing has to be repeated for all Item Types
 
     public void updateMCQItem(MCQItem updatedItem, MCQItem dbItem) {
         if (updatedItem.getOption1() != null)

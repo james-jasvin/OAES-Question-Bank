@@ -9,6 +9,10 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+/*
+    COR Phase 3:
+    Calls loginAuthor() method of AuthorDao class and returns the Author object returned by it
+*/
 public class Login implements HandlerDao {
     AuthorDao authorDao;
     HandlerDao next;

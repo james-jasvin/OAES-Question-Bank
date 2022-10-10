@@ -6,6 +6,10 @@ import com.iiitb.oaes.DAO.HandlerDao;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
 
+/*
+    COR Phase 2:
+    Cleans the user login ID of SQL injection characters via Jsoup and calls the next handler in the chain
+*/
 public class Sanitize implements HandlerDao {
     HandlerDao next;
 

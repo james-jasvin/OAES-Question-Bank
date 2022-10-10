@@ -1,8 +1,5 @@
 package com.iiitb.oaes.Bean;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -11,18 +8,7 @@ import java.io.Serializable;
 public class Item implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
     protected Integer itemId;
-
-//    @Column(nullable = false)
-//    private Integer questionId;
-
-//    @Column(nullable = false)
-//    private Integer version;
-
-    // How many exams are using this question and evaluation of exam isn't finished
-//    @Column(nullable = false)
-//    private Integer usedCounter;
 
     @Column(unique = true, nullable = false)
     protected String question;

@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseImpl implements CourseDao {
+    /*
+        Create a Course object in the Database
+        Return the created object if successful, else NULL
+    */
     @Override
     public Course createCourse(Course course) {
         try (Session session = SessionUtil.getSession()) {
@@ -25,6 +29,9 @@ public class CourseImpl implements CourseDao {
         }
     }
 
+    /*
+        Return all the Courses in the Database
+    */
     @Override
     public List<Course> getCourses() {
         Session session = SessionUtil.getSession();
@@ -43,6 +50,10 @@ public class CourseImpl implements CourseDao {
         }
     }
 
+    /*
+        Return the Course with the specified Id in the Database
+        Return NULL if no Course with specified Id found
+    */
     @Override
     public Course getCourseById(Integer courseId) {
         Session session = SessionUtil.getSession();

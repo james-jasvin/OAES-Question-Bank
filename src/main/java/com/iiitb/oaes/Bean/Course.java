@@ -1,9 +1,7 @@
 package com.iiitb.oaes.Bean;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -20,8 +18,10 @@ public class Course implements Serializable {
     @Column(unique = true, nullable = false)
     private String abbreviation;
 
+    // @JsonIgnore helps to omit "items" field from serialization of Course object
+    // That is, when Course object is converted DB object to Java object
     @OneToMany(mappedBy="course")
-    @JsonIgnore // to omit from serialization
+    @JsonIgnore
     private List<Item> items;
 
     public Course(String name, String abbreviation) {

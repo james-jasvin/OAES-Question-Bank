@@ -10,6 +10,7 @@ public class TrueFalseItem extends Item implements Serializable {
 
     public TrueFalseItem() { }
 
+    // Same case as with MCQ, itemType must be set to TrueFalse
     public TrueFalseItem(Integer itemId) {
         this.itemId = itemId;
         this.itemType = "TrueFalse";
@@ -34,6 +35,7 @@ public class TrueFalseItem extends Item implements Serializable {
         return "\nQuestion ID: " + itemId + '\n' +
                 "Question: " + question + '\n' +
                 "Correct Answer: " + answer + '\n' +
+                // To handle annoying NULL pointer exception errors
                 (course != null? "Course: " + course.getName() + '\n': "");
     }
 }

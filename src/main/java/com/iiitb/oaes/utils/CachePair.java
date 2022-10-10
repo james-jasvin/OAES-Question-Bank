@@ -4,6 +4,7 @@ import com.iiitb.oaes.Bean.Item;
 
 import java.util.List;
 
+// Utility class to store Cache Items of ProxyItemImpl class
 public class CachePair {
     List<Item> items;
     Boolean needReset;

@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AuthorImpl implements AuthorDao {
+    /*
+        Create an Author object in the Database
+        Return the created object if successful, else NULL
+    */
     @Override
     public Author registerAuthor(Author author) {
         try (Session session = SessionUtil.getSession()) {
@@ -27,6 +31,10 @@ public class AuthorImpl implements AuthorDao {
         }
     }
 
+    /*
+        Check whether specified Author's loginId and password match with an Author object in the Database
+        Return the selected Author object if successful else NULL
+    */
     @Override
     public Author loginAuthor(Author author) {
         try (Session session = SessionUtil.getSession()) {
@@ -50,6 +58,9 @@ public class AuthorImpl implements AuthorDao {
         }
     }
 
+    /*
+        Return all the Authors in the Database
+    */
     @Override
     public List<Author> getAuthors() {
         Session session = SessionUtil.getSession();

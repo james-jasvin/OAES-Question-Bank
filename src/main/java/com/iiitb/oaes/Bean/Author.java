@@ -1,6 +1,5 @@
 package com.iiitb.oaes.Bean;
 
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
