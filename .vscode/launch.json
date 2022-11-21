@@ -1,0 +1,44 @@
+{
+	"configurations": [
+		{
+			"type": "java",
+			"name": "Launch SpringCloudGatewayApplication",
+			"request": "launch",
+			"mainClass": "in.ac.iiitb.scloudgw.SpringCloudGatewayApplication",
+			"projectName": "scloudgw"
+		},
+		{
+			"type": "java",
+			"name": "Launch ZuulApplication",
+			"request": "launch",
+			"mainClass": "in.ac.iiitb.zuul.ZuulApplication",
+			"projectName": "zuul"
+		},
+		{
+			"type": "java",
+			"name": "Launch ServiceAApplication",
+			"request": "launch",
+			"mainClass": "in.ac.iiitb.serviceA.ServiceAApplication"
+		},
+		{
+			"type": "java",
+			"name": "Spring Boot-EurekaSdApplication<eureka>",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"mainClass": "in.ac.iiitb.eureka.EurekaSdApplication",
+			"projectName": "eureka",
+			"args": "",
+			"envFile": "${workspaceFolder}/.env"
+		},
+		{
+			"type": "java",
+			"name": "Spring Boot-ServiceAApplication<serviceA>",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"mainClass": "in.ac.iiitb.serviceA.ServiceAApplication",
+			"projectName": "serviceA",
+			"args": "",
+			"envFile": "${workspaceFolder}/.env"
+		}
+	]
+}
