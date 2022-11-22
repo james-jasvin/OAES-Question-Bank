@@ -48,6 +48,9 @@ public class MCQItem extends Item {
         this.option4 = option4;
         this.answer = answer;
         this.itemType = "MCQ";
+
+        this.author = author;
+        this.course = course;
     }
 
     @Override

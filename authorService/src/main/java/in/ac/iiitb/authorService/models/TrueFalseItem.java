@@ -30,6 +30,7 @@ public class TrueFalseItem extends Item {
         this.question = question;
         this.answer = answer;
         this.itemType = "TrueFalse";
+        
         this.author = author;
         this.course = course;
     }
