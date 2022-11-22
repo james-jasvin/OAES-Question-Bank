@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +34,7 @@ public class Author {
     @Column(nullable = false, length = 100)
     private String password;
 
-    @OneToMany(mappedBy="author")
+    @OneToMany(mappedBy="author",fetch = FetchType.EAGER)
     private List<Item> items;
 
     public Author(String name, String loginId, String password) {
@@ -41,4 +42,6 @@ public class Author {
         this.loginId = loginId;
         this.password = password;
     }
+
+   
 }

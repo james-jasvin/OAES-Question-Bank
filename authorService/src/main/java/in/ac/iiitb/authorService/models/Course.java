@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +37,7 @@ public class Course {
 
     // @JsonIgnore helps to omit "items" field from serialization of Course object
     // That is, when Course object is converted DB object to Java object
-    @OneToMany(mappedBy="course")
+    @OneToMany(mappedBy="course", fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Item> items;
 
