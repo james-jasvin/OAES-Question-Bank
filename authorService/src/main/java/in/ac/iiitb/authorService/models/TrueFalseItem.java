@@ -25,12 +25,11 @@ public class TrueFalseItem extends Item {
         this.itemType = "TrueFalse";
     }
 
-    public TrueFalseItem(Integer itemId, String question, Boolean answer, Author author, Course course) {
-        this.itemId = itemId;
+    public TrueFalseItem(String question, Boolean answer, Author author, Course course) {
         this.question = question;
         this.answer = answer;
         this.itemType = "TrueFalse";
-        
+
         this.author = author;
         this.course = course;
     }

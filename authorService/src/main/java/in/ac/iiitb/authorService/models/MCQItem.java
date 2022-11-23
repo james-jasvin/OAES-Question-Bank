@@ -39,8 +39,7 @@ public class MCQItem extends Item {
         this.itemType = "MCQ";
     }
 
-    public MCQItem(Integer itemId, String question, String option1, String option2, String option3, String option4, Integer answer, Author author, Course course) {
-        this.itemId = itemId;
+    public MCQItem(String question, String option1, String option2, String option3, String option4, Integer answer, Author author, Course course) {
         this.question = question;
         this.option1 = option1;
         this.option2 = option2;

@@ -10,5 +10,5 @@ import in.ac.iiitb.itemService.models.Item;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
-  List<Item> findByAuthorId(int authorId);
+  List<Item> findByAuthor(Author author);
 }

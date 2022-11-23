@@ -6,10 +6,6 @@ import in.ac.iiitb.authorService.models.Item;
 import in.ac.iiitb.authorService.models.MCQItem;
 import in.ac.iiitb.authorService.models.TrueFalseItem;
 
-import in.ac.iiitb.authorService.repositories.AuthorRepository;
-import in.ac.iiitb.authorService.repositories.CourseRepository;
-import in.ac.iiitb.authorService.repositories.ItemRepository;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +14,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 /*
@@ -77,10 +72,10 @@ public class InitializeDB{
       });
 
       List<Course> courses = Arrays.asList(new Course[] {
-        new Course(1, "Software Architecture", "SA", null),
-        new Course(2, "Software Testing","ST", null),
-        new Course(3, "Network Science for the Web","NSW", null),
-        new Course(4, "Advanced Cyber Security","ACY", null),
+        new Course("Software Architecture", "SA", null),
+        new Course("Software Testing","ST", null),
+        new Course("Network Science for the Web","NSW", null),
+        new Course("Advanced Cyber Security","ACY", null),
       });
 
       List<Course> dbCourses = new ArrayList<>();
@@ -93,7 +88,6 @@ public class InitializeDB{
 
         List<MCQItem> mcqItems = Arrays.asList(new MCQItem[] {
           new MCQItem(
-          1, 
           "In which of the following patterns an interface is responsible for creating a factory of related objects without explicitly specifying their classes?",
           "Factory Pattern",
           "Abstract Factory Pattern",
@@ -105,7 +99,6 @@ public class InitializeDB{
           ),
       
           new MCQItem(
-          2, 
           "Which of the below is not a valid classification of design pattern?",
           "Creational Patterns",
           "Structural Patterns",
@@ -120,14 +113,12 @@ public class InitializeDB{
   
         List<TrueFalseItem> trueFalseItems = Arrays.asList(new TrueFalseItem[] {
           new TrueFalseItem(
-          3, 
           "Is the Earth Flat?",
           false,
           dbAuthors.get(2),
           dbCourses.get(2)
           ),
           new TrueFalseItem(
-          4, 
           "Can design patterns be used in Architecture as well?",
           true,
           dbAuthors.get(3),

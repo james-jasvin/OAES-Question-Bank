@@ -4,12 +4,13 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,14 +35,17 @@ public class Author {
     @Column(nullable = false, length = 100)
     private String password;
 
-    @OneToMany(mappedBy="author",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="author")
+    @JsonIgnore
     private List<Item> items;
+
+    public Author(Integer authorId) {
+        this.authorId = authorId;
+    }
 
     public Author(String name, String loginId, String password) {
         this.name = name;
         this.loginId = loginId;
         this.password = password;
     }
-
-   
 }

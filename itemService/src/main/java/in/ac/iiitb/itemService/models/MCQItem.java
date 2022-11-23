@@ -22,10 +22,13 @@ import lombok.NoArgsConstructor;
 public class MCQItem extends Item {
     @Column(nullable = false)
     private String option1;
+
     @Column(nullable = false)
     private String option2;
+
     @Column(nullable = false)
     private String option3;
+    
     @Column(nullable = false)
     private String option4;
 

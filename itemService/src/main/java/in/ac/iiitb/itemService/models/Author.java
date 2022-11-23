@@ -36,6 +36,10 @@ public class Author {
     @OneToMany(mappedBy="author")
     private List<Item> items;
 
+    public Author(Integer authorId) {
+        this.authorId = authorId;
+    }
+
     public Author(String name, String loginId, String password) {
         this.name = name;
         this.loginId = loginId;

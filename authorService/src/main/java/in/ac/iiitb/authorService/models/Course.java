@@ -37,13 +37,14 @@ public class Course {
 
     // @JsonIgnore helps to omit "items" field from serialization of Course object
     // That is, when Course object is converted DB object to Java object
-    @OneToMany(mappedBy="course", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="course")
     @JsonIgnore
     private List<Item> items;
 
-    public Course(String name, String abbreviation) {
+    public Course(String name, String abbreviation, List<Item> items) {
         this.name = name;
         this.abbreviation = abbreviation;
+        this.items = items;
     }
 
     @Override

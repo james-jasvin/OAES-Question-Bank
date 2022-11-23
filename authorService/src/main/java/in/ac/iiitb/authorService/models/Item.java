@@ -2,7 +2,6 @@ package in.ac.iiitb.authorService.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +10,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,12 +34,14 @@ public class Item {
     @Column(nullable = false)
     protected String itemType;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="courseId", nullable=false)
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "courseId", nullable = false)
     protected Course course;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="authorId", nullable=false)
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "authorId", nullable = false)
     protected Author author;
 
     public Item(Integer itemId) {

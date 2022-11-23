@@ -32,28 +32,24 @@ public class ItemController {
     @GetMapping(
         produces = MediaType.APPLICATION_JSON
     )
-    public ResponseEntity<List<Item>> getAuthorItems(@QueryParam("authorId") int authorId) 
-    {
+    public ResponseEntity<List<Item>> getAuthorItems(@QueryParam("authorId") Integer authorId) {
         List<Item> itemsList = itemService.getAuthorItems(authorId);
         if (itemsList == null)
             return new ResponseEntity<List<Item>>(itemsList, HttpStatus.UNAUTHORIZED);
         else
-            return new ResponseEntity<List<Item>>(itemsList, HttpStatus.CREATED);
+            return new ResponseEntity<List<Item>>(itemsList, HttpStatus.OK);
     }
-
 
     @PostMapping(
       consumes=MediaType.APPLICATION_JSON,
       produces=MediaType.APPLICATION_JSON
     )
-    public ResponseEntity<Item> createItem(@RequestBody Item item) throws JsonProcessingException {
-        Item itemObj = itemService.createItem(item);
+    public ResponseEntity<Item> createItem(@RequestBody String itemJSONString) throws JsonProcessingException {
+        Item itemObj = itemService.createItem(itemJSONString);
 
         if (itemObj == null)
             return new ResponseEntity<Item>(itemObj, HttpStatus.UNAUTHORIZED);
         else
             return new ResponseEntity<Item>(itemObj, HttpStatus.CREATED);
     }
-    
-    
 }

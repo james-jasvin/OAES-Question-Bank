@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,11 +35,13 @@ public class Item {
     protected String itemType;
 
     @ManyToOne
-    @JoinColumn(name="courseId", nullable=false)
+    @JsonIgnore
+    @JoinColumn(name = "courseId", nullable = false)
     protected Course course;
 
     @ManyToOne
-    @JoinColumn(name="authorId", nullable=false)
+    @JsonIgnore
+    @JoinColumn(name = "authorId", nullable = false)
     protected Author author;
 
     public Item(Integer itemId) {

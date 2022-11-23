@@ -9,17 +9,26 @@ content-type: application/json
 
 ###
 
-GET http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items?authorId=2
+POST http://localhost:8060/author/login
+content-type: application/json
+
+{
+    "loginId": "jasvin_james",
+    "password": "Jasvin@1"
+}
 
 ###
-
-GET http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items?authorId=1
-
-###
-GET http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items?authorId=3
+GET http://localhost:8061/items?authorId=1
 
 ###
-POST http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items
+GET http://localhost:8061/items?authorId=2
+
+###
+GET http://localhost:8061/items?authorId=3
+
+###
+POST http://localhost:8061/items
+Content-Type: application/json
 
 {
     "author": {
@@ -41,7 +50,8 @@ POST http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items
 
 ###
 
-POST http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items
+POST http://localhost:8061/items
+Content-Type: application/json
 
 {
     "author": {

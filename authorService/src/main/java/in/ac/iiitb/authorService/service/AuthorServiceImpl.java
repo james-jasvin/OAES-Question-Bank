@@ -41,10 +41,12 @@ public class AuthorServiceImpl implements AuthorService {
         if (!loggedInAuthor.isPresent())
             return null;
 
-        // Setting items to null to avoid cyclic dependency issues
-        loggedInAuthor.get().setItems(null);
+        if (loggedInAuthor.get().getPassword().equals(author.getPassword()))
+            return loggedInAuthor.get();
+        else
+            return null;
 
-        // return loggedInAuthor;
-        return loggedInAuthor.get();
+        // Setting items to null to avoid cyclic dependency issues
+        // loggedInAuthor.get().setItems(null);
     }
 }
