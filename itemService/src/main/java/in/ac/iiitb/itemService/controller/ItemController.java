@@ -23,7 +23,7 @@ import in.ac.iiitb.itemService.service.ItemService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("items")
+@RequestMapping("item")
 public class ItemController {
     @Autowired
     private ItemService itemService;

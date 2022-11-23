@@ -1,5 +1,5 @@
 server:
-    port: 8080
+    port: 8081
 
 eureka:
   client:
@@ -16,14 +16,14 @@ spring:
     cloud:
         gateway:
             routes: 
-            - id: service-service
-              uri: lb://service-service
+            - id: author-service
+              uri: lb://author-service
               predicates:
-                - Path=/a/**
-            - id: flask-service
-              uri: http://localhost:8061/
+                - Path=/author/**
+            - id: item-service
+              uri: lb://item-service
               predicates:
-                - Path=/flask/**
+                - Path=/item/**
             discovery:
               locator:
                 lower-case-service-id: true

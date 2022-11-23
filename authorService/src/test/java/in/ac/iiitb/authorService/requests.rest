@@ -15,6 +15,16 @@ content-type: application/json
     "loginId": "jasvin_james",
     "password": "Jasvin@123"
 }
+
+###
+POST http://localhost:8081/author/login
+content-type: application/json
+
+{
+    "loginId": "jasvin_james",
+    "password": "Jasvin@123"
+}
+
 ###
 
 GET http://localhost:8080/OAES_QuestionBank_Webapp_war_exploded/api/items?authorId=2

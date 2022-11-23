@@ -18,16 +18,20 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:8061/items?authorId=1
+GET http://localhost:8061/item?authorId=1
 
 ###
-GET http://localhost:8061/items?authorId=2
+GET http://localhost:8061/item?authorId=2
 
 ###
-GET http://localhost:8061/items?authorId=3
+GET http://localhost:8061/item?authorId=3
 
 ###
-POST http://localhost:8061/items
+
+GET http://localhost:8081/item?authorId=1
+
+###
+POST http://localhost:8061/item
 Content-Type: application/json
 
 {
@@ -50,7 +54,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8061/items
+POST http://localhost:8061/item
 Content-Type: application/json
 
 {
@@ -64,6 +68,29 @@ Content-Type: application/json
         "answer": false
     },
     "itemType": "TrueFalse",
+    "courseId": 1
+}
+
+###
+
+POST http://localhost:8081/item
+Content-Type: application/json
+
+{
+    "author": {
+        "loginId": "jasvin_james",
+        "password": "Jasvin@123",
+        "authorId": 1
+    },
+    "item": {
+        "question": "Dummy question 5?",
+        "option1": "Factory Pattern",
+        "option2": "Abstract Factory Pattern",
+        "option3": "Singleton Pattern",
+        "option4": "Transfer Object Pattern",
+        "answer": 3
+    },
+    "itemType": "MCQ",
     "courseId": 1
 }
 
