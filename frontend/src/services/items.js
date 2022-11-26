@@ -19,6 +19,13 @@ const payBill = async (bill) => {
   return response.data
 }
 
-const exportObject = { getUserItems, payBill }
+const createItem = async (item) => {
+  // TODO: REMOVE STATIC COURSEID LATER
+  item.courseId = 1
+  const response = await axios.post(`${itemsUrl}`, item)
+  return response.data
+}
+
+const exportObject = { getUserItems, payBill, createItem }
 
 export default exportObject

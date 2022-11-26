@@ -7,6 +7,7 @@ import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import NavBar from './components/NavBar'
 import Items from './components/Items'
+import ItemForm from './components/ItemForm'
 
 const App = () => {
   // user state will store the logged in user object, if no login has been done yet then it will be null
@@ -48,6 +49,39 @@ const App = () => {
     }
   }
 
+  // Function that creates a new watchlist using the watchlistObject that is passed to the function
+  const createItem = async (itemObject) => {
+    try {
+      /* Expected Input Format:
+      {
+        "author": {
+          "loginId": "gaurav_tirodkar",
+          "password": "Gaurav@123",
+          "authorId": 2
+        },
+        "item": <Item Parameters>,
+        "itemType": "TrueFalse",
+        "courseId": 1
+      }
+      */
+      const authorAddedItemObject = {
+        ...itemObject,
+        author: user
+      }
+
+      console.log(authorAddedItemObject)
+      const createdItem = await itemService.createItem(authorAddedItemObject)
+
+      setItems(items.concat(createdItem))
+
+      notificationHandler(`The new item has been added successfully`, 'success')
+    }
+    catch (exception) {
+      notificationHandler(exception.response.data.error, 'error')
+    }
+  }
+
+  // TODO: UPDATE THIS METHOD TO UPDATEITEMS() METHOD
   // Function that pays a bill using the billObject that is passed to the function
   const payBill = async (billObject) => {
     try {
@@ -113,8 +147,17 @@ const App = () => {
         <NavBar user={user} setUser={setUser}/>
       } 
 
+
       {
-        /* Show Bills of the User when login has happened */
+        /* Show Item Form on login that can be used to create an item */
+        user !== null &&
+        <ItemForm
+          createItem={createItem}
+        />
+      }
+
+      {
+        /* Show Items of the Author when login has happened */
         user !== null &&
         <Items
           items={items}

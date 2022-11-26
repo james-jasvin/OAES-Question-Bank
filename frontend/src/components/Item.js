@@ -43,6 +43,8 @@ const Item = ({ item, payBill }) => {
       </div>
 
       {/* Render the Item's details */}
+
+      {/* Item Question */}
       <textarea 
         rows={5}
         cols={75}

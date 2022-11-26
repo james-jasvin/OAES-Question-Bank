@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,14 +22,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import in.ac.iiitb.itemService.models.Item;
 import in.ac.iiitb.itemService.service.ItemService;
 
-
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("item")
 public class ItemController {
     @Autowired
     private ItemService itemService;
-
 
     @GetMapping(
         produces = MediaType.APPLICATION_JSON
@@ -58,7 +57,7 @@ public class ItemController {
         consumes = MediaType.APPLICATION_JSON,
         produces = MediaType.APPLICATION_JSON
     )
-    public ResponseEntity<Item> updateItem(@RequestBody String itemJSONString) throws JsonProcessingException {
+    public ResponseEntity<Item> updateItem(@RequestBody String itemJSONString, @PathVariable Integer itemId) throws JsonProcessingException {
         Item item = itemService.updateAuthorItem(itemJSONString);
 
         if (item == null)
