@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import in.ac.iiitb.authorService.models.Author;
@@ -17,7 +18,14 @@ public class AuthorServiceImpl implements AuthorService {
     // Save operation
     @Override
     public Author registerAuthor(Author author) {
-        return authorRepository.save(author);
+        try {
+            return authorRepository.save(author);
+        }
+        // In case any DB constraints are violated while inserting
+        catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return null;
+        }
     } 
 
     // Fetch all Authors

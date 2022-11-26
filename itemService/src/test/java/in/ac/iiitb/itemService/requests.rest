@@ -1,5 +1,5 @@
 
-POST http://localhost:8060/author/login
+POST http://localhost:8081/author/login
 content-type: application/json
 
 {
@@ -9,7 +9,7 @@ content-type: application/json
 
 ###
 
-POST http://localhost:8060/author/login
+POST http://localhost:8081/author/login
 content-type: application/json
 
 {
@@ -18,20 +18,16 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:8061/item?authorId=1
+GET http://localhost:8081/item?authorId=5
 
 ###
-GET http://localhost:8061/item?authorId=2
+GET http://localhost:8081/item?authorId=2
 
 ###
-GET http://localhost:8061/item?authorId=3
+GET http://localhost:8081/item?authorId=3
 
 ###
-
-GET http://localhost:8081/item?authorId=1
-
-###
-POST http://localhost:8061/item
+POST http://localhost:8081/item
 Content-Type: application/json
 
 {
@@ -41,7 +37,7 @@ Content-Type: application/json
         "authorId": 1
     },
     "item": {
-        "question": "Dummy question 5?",
+        "question": "Dummy question 7?",
         "option1": "Factory Pattern",
         "option2": "Abstract Factory Pattern",
         "option3": "Singleton Pattern",
@@ -54,7 +50,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8061/item
+POST http://localhost:8081/item
 Content-Type: application/json
 
 {
@@ -73,30 +69,8 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8081/item
+PUT http://localhost:8081/item
 Content-Type: application/json
-
-{
-    "author": {
-        "loginId": "jasvin_james",
-        "password": "Jasvin@123",
-        "authorId": 1
-    },
-    "item": {
-        "question": "Dummy question 5?",
-        "option1": "Factory Pattern",
-        "option2": "Abstract Factory Pattern",
-        "option3": "Singleton Pattern",
-        "option4": "Transfer Object Pattern",
-        "answer": 3
-    },
-    "itemType": "MCQ",
-    "courseId": 1
-}
-
-###
-
-PUT http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items
 
 {
     "author": {
@@ -105,7 +79,7 @@ PUT http://localhost:8081/OAES_QuestionBank_Webapp_war_exploded/api/items
         "authorId": 2
     },
     "item": {
-        "itemId": 7,
+        "itemId": 6,
         "question": "Dummy TF 69?"
     },
     "itemType": "TrueFalse",

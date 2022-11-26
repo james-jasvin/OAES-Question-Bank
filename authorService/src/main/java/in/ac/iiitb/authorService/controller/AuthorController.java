@@ -51,7 +51,7 @@ public class AuthorController {
         if (loggedInAuthor == null)
             return new ResponseEntity<Author>(loggedInAuthor, HttpStatus.UNAUTHORIZED);
         else
-            return new ResponseEntity<Author>(loggedInAuthor, HttpStatus.CREATED);
+            return new ResponseEntity<Author>(loggedInAuthor, HttpStatus.OK);
     }
 
     @PostMapping(
@@ -63,7 +63,7 @@ public class AuthorController {
         Author registeredAuthor = authorService.registerAuthor(author);
 
         if (registeredAuthor == null)
-            return new ResponseEntity<Author>(registeredAuthor, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<Author>(registeredAuthor, HttpStatus.BAD_REQUEST);
         else
             return new ResponseEntity<Author>(registeredAuthor, HttpStatus.CREATED);
     }

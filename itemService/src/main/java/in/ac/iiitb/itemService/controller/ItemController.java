@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,15 +42,28 @@ public class ItemController {
     }
 
     @PostMapping(
-      consumes=MediaType.APPLICATION_JSON,
-      produces=MediaType.APPLICATION_JSON
+      consumes = MediaType.APPLICATION_JSON,
+      produces = MediaType.APPLICATION_JSON
     )
     public ResponseEntity<Item> createItem(@RequestBody String itemJSONString) throws JsonProcessingException {
         Item itemObj = itemService.createItem(itemJSONString);
 
         if (itemObj == null)
-            return new ResponseEntity<Item>(itemObj, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<Item>(itemObj, HttpStatus.BAD_REQUEST);
         else
             return new ResponseEntity<Item>(itemObj, HttpStatus.CREATED);
+    }
+
+    @PutMapping(
+        consumes = MediaType.APPLICATION_JSON,
+        produces = MediaType.APPLICATION_JSON
+    )
+    public ResponseEntity<Item> updateItem(@RequestBody String itemJSONString) throws JsonProcessingException {
+        Item item = itemService.updateAuthorItem(itemJSONString);
+
+        if (item == null)
+            return new ResponseEntity<Item>(item, HttpStatus.BAD_REQUEST);
+        else
+            return new ResponseEntity<Item>(item, HttpStatus.OK);
     }
 }

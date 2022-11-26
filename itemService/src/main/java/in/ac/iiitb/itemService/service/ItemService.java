@@ -9,6 +9,6 @@ import in.ac.iiitb.itemService.models.Item;
 public interface ItemService {
   Item createItem(String itemJSONString) throws JsonProcessingException;
   List<Item> getAuthorItems(Integer authorId);
-  // Item updateAuthorItem(Item item, Integer authorId);
+  Item updateAuthorItem(String itemJSONString) throws JsonProcessingException;
 }
 
