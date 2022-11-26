@@ -69,6 +69,27 @@ Content-Type: application/json
 
 ###
 
+POST http://localhost:8081/item
+Content-Type: application/json
+
+{
+    "author": {
+        "loginId": "jasvin_james",
+        "password": "Jasvin@123",
+        "authorId": 1
+    },
+    "item": {
+        "question": "Dummy question 4?",
+        "answer": false
+    },
+    "itemType": "TrueFalse",
+    "courseId": 1
+}
+
+
+
+###
+
 PUT http://localhost:8081/item
 Content-Type: application/json
 

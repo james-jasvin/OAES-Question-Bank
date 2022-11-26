@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 /*
   This component is used for rendering a single Bills's view
@@ -12,6 +12,14 @@ import React from 'react'
   the collection
 */
 const Item = ({ item, payBill }) => {
+  const [ itemState, setItemState ] = useState(item);
+
+  // State to ensure that all input elements are disabled, i.e. non-editable
+  const [ inputsDisabled, setInputsDisabled ] = useState(true);
+
+  if (item == null)
+    return null; 
+
   /*
     Instruments are added to watchlists with the help of a dropdown list <select>.
     Add a <option> element with value=-1 in the <select> list that will serve as the default option.
@@ -22,32 +30,95 @@ const Item = ({ item, payBill }) => {
   */
   return (
     <div>
+      <div>
+        {/*
+          This checkbox when ticked will enable all Item elements to be updated
+          Otherwise they will be read-only elements
+        */}
+        <input 
+          type='checkbox'
+          checked={ !inputsDisabled }
+          onChange={ event => setInputsDisabled(!event.target.checked) }
+        />
+      </div>
+
       {/* Render the Item's details */}
-      <textarea rows={5} cols={75}>{item.question}</textarea>
+      <textarea 
+        rows={5}
+        cols={75}
+        onChange={event => setItemState({...itemState, question: event.target.value})}
+        value={itemState.question}
+        disabled={inputsDisabled}
+      />
 
       {
         item.itemType === 'MCQ'?
         // Displaying MCQ specific properties
         <div>
-          <textarea rows={5} cols={75}>{ item.option1 }</textarea>
-          <textarea rows={5} cols={75}>{ item.option2 }</textarea>
-          <textarea rows={5} cols={75}>{ item.option3 }</textarea>
-          <textarea rows={5} cols={75}>{ item.option4 }</textarea>
-          <input type='number' min={1} max={4} value={ item.answer } />
+          <textarea
+            rows={5}
+            cols={75}
+            onChange={event => setItemState({...itemState, option1: event.target.value})}
+            value={ itemState.option1 }
+            disabled={inputsDisabled}
+          />
+          <textarea
+            rows={5}
+            cols={75}
+            onChange={event => setItemState({...itemState, option2: event.target.value})}
+            value={ itemState.option2 }
+            disabled={inputsDisabled}
+          />
+          <textarea
+            rows={5}
+            cols={75}
+            onChange={event => setItemState({...itemState, option3: event.target.value})}
+            value={ itemState.option3 }
+            disabled={inputsDisabled}
+          />
+          <textarea
+            rows={5}
+            cols={75}
+            onChange={event => setItemState({...itemState, option4: event.target.value})}
+            value={ itemState.option4 }
+            disabled={inputsDisabled}
+          />
+          <input
+            type='number'
+            min={1} max={4}
+            value={ itemState.answer }
+            onChange={event => setItemState({...itemState, answer: event.target.value})}
+            disabled={inputsDisabled}
+          />
         </div>
         :
-        
+        // Displaying True False specific properties
         <div>
-          <input type='checkbox' checked={ item.answer }/>
+          <input 
+            type='checkbox'
+            checked={ itemState.answer }
+            onChange={event => setItemState({...itemState, answer: event.target.checked})}
+            disabled={inputsDisabled}
+          />
         </div>
       }
 
       Course Name: { item.course.name }
 
-      {/* Payment button that calls the payBill() method with the given Bill object onClick */}
-      {/* <button onClick={() => payBill(item)}>
-        Pay Bill
-      </button> */}
+      {/*
+        Submit button that sends a PUT request to the backend to update the Item that has
+        been input by the Author into the input elements
+        But first the update items checkbox must be checked for this button to be rendered
+      */}
+      {
+        !inputsDisabled?
+        // TODO: ADD ONCLICK EVENT HANDLER HERE
+        <button>
+          Update Item
+        </button>
+        : <></>
+      }
+      
     </div>
   )
 }

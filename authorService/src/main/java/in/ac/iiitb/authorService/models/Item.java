@@ -35,7 +35,6 @@ public class Item {
     protected String itemType;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "courseId", nullable = false)
     protected Course course;
 

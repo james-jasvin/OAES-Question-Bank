@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // The API endpoint where bills are located
-const itemsUrl = `http://localhost:8060/items`
+const itemsUrl = `http://localhost:8081/item`
 
 // Gets all items which belong to a user
 const getUserItems = async (user) => {

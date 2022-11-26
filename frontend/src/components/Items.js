@@ -24,13 +24,13 @@ const Items = ({ items, payBill }) => {
         // for React to uniquely identify each Bill
         // We also pass on the Bill object that has to be rendered by the component and the payBill method that will
         // execute the payment
-        // items.map(item =>
-        //   <Item
-        //     item={item}
-        //     key={item.itemId}
-        //     payBill={payBill}
-        //   /> 
-        // )
+        items.map(item =>
+          <Item
+            item={item}
+            key={item.itemId}
+            payBill={payBill}
+          /> 
+        )
       }
     </div>
   )
