@@ -8,7 +8,7 @@ import Item from './Item'
   bills: Collection of bills of the given Student
   payBill: Method that uses the axios service to pay the specified bill, i.e. send a DELETE request
 */
-const Items = ({ items, payBill }) => {  
+const Items = ({ items, updateItem }) => {  
   // If there's no Items for the student, then render nothing. 
   // Can instead render a message like "No Items Added"
   if (items === [])
@@ -28,7 +28,7 @@ const Items = ({ items, payBill }) => {
           <Item
             item={item}
             key={item.itemId}
-            payBill={payBill}
+            updateItem={updateItem}
           /> 
         )
       }

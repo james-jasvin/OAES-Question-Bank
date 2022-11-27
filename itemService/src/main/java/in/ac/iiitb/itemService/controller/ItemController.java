@@ -23,7 +23,6 @@ import in.ac.iiitb.itemService.models.Item;
 import in.ac.iiitb.itemService.service.ItemService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("item")
 public class ItemController {
     @Autowired
@@ -54,6 +53,7 @@ public class ItemController {
     }
 
     @PutMapping(
+        path="/{itemId}",
         consumes = MediaType.APPLICATION_JSON,
         produces = MediaType.APPLICATION_JSON
     )

@@ -15,15 +15,29 @@ spring:
         name: gateway-service
     cloud:
         gateway:
+            globalcors:
+            # To handle requests like OPTIONS which do not have default URL handler
+            # This states that the same handling should be applied to OPTIONS which is done
+            # for the other methods
+              add-to-simple-url-handler-mapping: true
+              cors-configurations:
+                '[/**]':
+                # Allow all Methods, Headers and restricts the origin
+                # All properties are required otherwise any request with a body will fail
+                  allowedOrigins: "http://localhost:3000"
+                  allowedMethods: "*"
+                  allowedHeaders: "*"
+                  
+            # Always end URI with / otherwise, 404 error can happen sometimes
             routes: 
             - id: author-service
-              uri: lb://author-service
+              uri: lb://author-service/
               predicates:
                 - Path=/author/**
             - id: item-service
-              uri: lb://item-service
+              uri: lb://item-service/
               predicates:
-                - Path=/item/**
+                - Path=/item,/item/{id},/course
             discovery:
               locator:
                 lower-case-service-id: true

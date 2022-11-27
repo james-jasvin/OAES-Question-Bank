@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 /*
   This component is used for creating a new Watchlist
 */
-const ItemForm = ({ createItem }) => {
+const ItemForm = ({ createItem, courses }) => {
   // Setting up default empty items for each item type so that its easier to initialize states
   const emptyItem = {
     'question': ''
@@ -21,7 +21,7 @@ const ItemForm = ({ createItem }) => {
     'answer': true
   }
 
-  // TODO: ADD COURSE AS A PARAMETER IN THIS LATER
+  
   const [ item, setItem ] = useState(emptyItem)
 
   const [ mcqItem, setMCQItem ] = useState(emptyMCQItem)
@@ -30,8 +30,19 @@ const ItemForm = ({ createItem }) => {
 
   const [ itemType, setItemType ] = useState('MCQ')
 
-  const addItem = (event) => {
+  /*
+    State used for controlling the Select Course dropdown list.
+    It stores the index of a course in the courses list.
+    Initially set to -1, which is used for representing the default "Select a Course" option.
+  */
+  const [ selectedCourse, setSelectedCourse ] = useState(-1)
+
+  const addItem = async (event) => {
     event.preventDefault()
+
+    // If no valid course selected then return to stop submission
+    if (selectedCourse === -1)
+      return null
 
     let requestItem = null
 
@@ -48,6 +59,7 @@ const ItemForm = ({ createItem }) => {
             "answer": 3
           },
           "itemType": "MCQ",
+          "courseId": 1
         }
       */
       requestItem = {
@@ -55,7 +67,8 @@ const ItemForm = ({ createItem }) => {
           question: item.question,
           ...mcqItem
         },
-        itemType: itemType
+        itemType: itemType,
+        courseId: courses[selectedCourse].courseId
       }
     }
     else {
@@ -74,18 +87,26 @@ const ItemForm = ({ createItem }) => {
           question: item.question,
           ...trueFalseItem
         },
-        itemType: itemType
+        itemType: itemType,
+        courseId: courses[selectedCourse].courseId
       }
     }
 
-    console.log(requestItem)
-    createItem(requestItem)
+    await createItem(requestItem)
 
     setItem(emptyItem)
     setItemType('MCQ')
     setMCQItem(emptyMCQItem)
     setTrueFalseITem(emptyTrueFalseItem)
   }
+
+  // For handling selection of drop-down event
+  const handleSelectCourse = (event) => {
+    const courseIdx = event.target.value
+    // Set selectedCourse option so that its displayed to the user on the frontend
+    setSelectedCourse(courseIdx)
+  }
+
 
   return (
     <div className='p-2 m-5 rounded regular-shadow' id='item-form-div'>
@@ -107,6 +128,7 @@ const ItemForm = ({ createItem }) => {
         </div>
 
         {/* Manage Item Type here, currently can be MCQ or TrueFalse */}
+        <label>Item Type:</label>
         <div className='form-radio-group' onChange={event => setItemType(event.target.value)}>
           <input required type='radio' id='mcq' name='item-type' value='MCQ' className='mr-2' data-testid='mcq-radio-button'/>
           <label htmlFor='mcq'>MCQ Item</label><br/>
@@ -192,7 +214,31 @@ const ItemForm = ({ createItem }) => {
             </div>
         }
 
-        <button className='btn btn-success' type='submit' id='item-submit'>Submit</button>
+        <div className='form-group'>
+        <label>
+          Select Course: <br/>
+          {/* Select Drop Down for choosing Course of the Item being added */}
+          <select 
+            className='form-select p-2 regular-shadow rounded-lg'
+            value={selectedCourse}
+            onChange={handleSelectCourse}
+          >
+            <option value={-1}>Select a Course</option>
+            {
+              courses.map((c, idx) => 
+                <option key={c.courseId} value={idx}>{c.name}</option>
+              )
+            }
+          </select>
+        </label>
+        </div>
+        
+        
+        
+        <div>
+          <button className='btn btn-success' type='submit' id='item-submit'>Submit</button>
+        </div>
+        
       </form>
     </div>
   )

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 
 import loginService from './services/login'
 import itemService from './services/items'
+import courseService from './services/courses'
+
 
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
@@ -15,6 +17,8 @@ const App = () => {
 
   // Will store the items of the logged in user
   const [ items, setItems ] = useState([])
+
+  const [ courses, setCourses ] = useState([])
 
   // These states are used to control the notifications that show up at the top of the screen for events like 
   // login, signup, watchlist creation, etc.
@@ -69,7 +73,6 @@ const App = () => {
         author: user
       }
 
-      console.log(authorAddedItemObject)
       const createdItem = await itemService.createItem(authorAddedItemObject)
 
       setItems(items.concat(createdItem))
@@ -81,21 +84,45 @@ const App = () => {
     }
   }
 
-  // TODO: UPDATE THIS METHOD TO UPDATEITEMS() METHOD
-  // Function that pays a bill using the billObject that is passed to the function
-  const payBill = async (billObject) => {
+  /*
+    Function that updates an item using the itemObject that is passed to the function
+    by the Item component.
+
+    Returns true when update happens successfully so that the item state of the item
+    being updated can be rendered with the updated values
+    And when update fails, it returns false, in which the item state of the item being updated
+    is reset back to the original values that was fetched from the DB
+  */
+  const updateItem = async (itemObject) => {
     try {
-      // Call payBill() at the backend 
-      await itemService.payBill(billObject)
+      /*
+        {
+          "author": {
+              "loginId": "gaurav_tirodkar",
+              "password": "Gaurav@123",
+              "authorId": 2
+          },
+          "item": <Item Parameters>,
+          "itemType": "TrueFalse",
+        }
+      */
+      const authorAddedItemObject= {
+        author: user,
+        ...itemObject
+      }
 
-      // On successful completion of the above method, iterate through all the bills and only retain those bills
-      // which don't have ID equal to the billObject's ID, i.e. the ID of the bill that's just been paid/deleted
-      setItems(items.filter(bill => bill.billId !== billObject.billId))
+      const updatedItem = await itemService.updateItem(authorAddedItemObject)
 
-      notificationHandler(`Successfully paid the "${billObject.description}" bill`, 'success')
+      // Update items state by storing the newly updated item in the old item's place
+      // and leaving all other items as it is
+      setItems(items.map(i => i.itemId !== updatedItem.itemId? i: updatedItem))
+
+      notificationHandler(`Updated the item successfully`, 'success')
+      return true
     }
     catch (exception) {
-      notificationHandler(`Failed to pay the "${billObject.description}" bill successfully`, 'error')
+      notificationHandler(`Failed to update the item`, 'error')
+      return false
     }
   }
 
@@ -105,14 +132,23 @@ const App = () => {
   // This is why "user" is part of the dependency array of this hook
   // MIGHT HAVE TO CHANGE THIS LATER TO PROMISE CHAINING IF IT FAILS
   useEffect(() => {
-      async function fetchData() {
+      async function fetchItems() {
         if (user) {
           const items = await itemService.getUserItems(user)
           setItems(items)
         }
       }
-      fetchData()
+      fetchItems()
   }, [user])
+
+  // Fetch all Courses in the Database
+  useEffect(() => {
+    async function fetchCourses() {
+      const courses = await courseService.getCourses()
+      setCourses(courses)
+    }
+    fetchCourses()
+  }, [])
 
 
   // Effect Hook that parses the local storage for 'loggedInUser' and sets the "user" state if a valid match is found
@@ -128,7 +164,7 @@ const App = () => {
       {/* Header of the page */}
       <div className='text-center page-header p-2 regular-text-shadow regular-shadow'>
           <div className='display-4 font-weight-bold'>
-            Academia - Payments
+            OAES
           </div>
       </div>
       
@@ -153,6 +189,7 @@ const App = () => {
         user !== null &&
         <ItemForm
           createItem={createItem}
+          courses={courses}
         />
       }
 
@@ -161,7 +198,7 @@ const App = () => {
         user !== null &&
         <Items
           items={items}
-          payBill={payBill}
+          updateItem={updateItem}
         />
       }
     </div>

@@ -40,7 +40,7 @@ const NavBar = ({ user, setUser }) => {
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
               {/* Here you can put a Link of React-Router, not of use right now but helpful for the future */}
-              Home 
+              Home
             </li>
           </ul>
           

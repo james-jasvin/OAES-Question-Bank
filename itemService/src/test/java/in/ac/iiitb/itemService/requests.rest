@@ -90,7 +90,7 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:8081/item
+PUT http://localhost:8081/item/6
 Content-Type: application/json
 
 {

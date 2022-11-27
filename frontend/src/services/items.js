@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-// The API endpoint where bills are located
+// The API endpoint where items are located
 const itemsUrl = `http://localhost:8081/item`
 
 // Gets all items which belong to a user
@@ -12,20 +12,17 @@ const getUserItems = async (user) => {
   return response.data
 }
 
-// Pays the bill which is specified, after paying, the record of the bill is deleted
-// So this translates to a delete request from axios to the bill API endpoint at the backend
-const payBill = async (bill) => {
-  const response = await axios.delete(`${itemsUrl}/${bill.billId}`)
+// Updates the item object in the database with the one that is specified here
+const updateItem = async (updateItemJSON) => {
+  const response = await axios.put(`${itemsUrl}/${updateItemJSON.item.itemId}`, updateItemJSON)
   return response.data
 }
 
 const createItem = async (item) => {
-  // TODO: REMOVE STATIC COURSEID LATER
-  item.courseId = 1
   const response = await axios.post(`${itemsUrl}`, item)
   return response.data
 }
 
-const exportObject = { getUserItems, payBill, createItem }
+const exportObject = { getUserItems, updateItem, createItem }
 
 export default exportObject

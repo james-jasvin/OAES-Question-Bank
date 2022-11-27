@@ -1,53 +1,78 @@
 import React, { useState } from 'react'
 
-/*
-  This component is used for rendering a single Bills's view
-  Show's the Bills details like name, bill amount, due date, etc.
-  Also has the payment button next to it, on clicking which, the payment method is executed
-
-  bill: The Bill object that has to be rendered
-  payBill: Method that uses the axios service to pay the specified bill, i.e. send a DELETE request
-
-  Note that the key attribute is not written here, its only written in the map() method that renders
-  the collection
-*/
-const Item = ({ item, payBill }) => {
+const Item = ({ item, updateItem }) => {
   const [ itemState, setItemState ] = useState(item);
 
   // State to ensure that all input elements are disabled, i.e. non-editable
   const [ inputsDisabled, setInputsDisabled ] = useState(true);
 
+  const textAreaRowSize = 3
+  const textAreaColSize = 100
+
+  const updateItemLocal = async () => {
+    /*
+      Input Format expected:
+      {
+        "item": {
+          "question": "Dummy question 7?",
+          "option1": "Factory Pattern",
+          "option2": "Abstract Factory Pattern",
+          "option3": "Singleton Pattern",
+          "option4": "Transfer Object Pattern",
+          "answer": 3
+        },
+        "itemType": "MCQ",
+      }
+    */
+    const requestItem = {
+      item: itemState,
+      itemType: itemState.itemType
+    }
+
+    // If item update failed then reset the rendered itemState to the correct details that
+    // were fetched from the database which is what the "item" object represents
+    const updateStatus = await updateItem(requestItem)
+    if (updateStatus === false)
+      setItemState(item)
+
+    setInputsDisabled(true)
+  }
+
   if (item == null)
     return null; 
 
-  /*
-    Instruments are added to watchlists with the help of a dropdown list <select>.
-    Add a <option> element with value=-1 in the <select> list that will serve as the default option.
-    "value" property corresponds to index of a watchlist in the filteredWatchlists list.
-    When user clicks an entry, the onChange of the <select> is triggered which will call createWatchlistInstrument.
-    If user clicks default option, then nothing should happen which is why we check for watchlistIdx == -1
-    in the createWatchlistInstrument function.
-  */
   return (
-    <div>
-      <div>
+    <div className='m-2 p-3 rounded border item-details'>
+      <div className='form-group'>
         {/*
           This checkbox when ticked will enable all Item elements to be updated
           Otherwise they will be read-only elements
         */}
-        <input 
-          type='checkbox'
-          checked={ !inputsDisabled }
-          onChange={ event => setInputsDisabled(!event.target.checked) }
-        />
+        <span>
+          <label htmlFor={`${item.itemId}-input-disabler`}>
+            Item Editing
+            <input 
+              id={`${item.itemId}-input-disabler`}
+              className='input-disabler'
+              type='checkbox'
+              checked={ !inputsDisabled }
+              onChange={ event => setInputsDisabled(!event.target.checked) }
+            />
+          </label>
+          
+        </span>
       </div>
-
       {/* Render the Item's details */}
 
       {/* Item Question */}
+      <label htmlFor={`${item.itemId}-item-question`}>
+        Question:
+      </label>
+      <br/>
       <textarea 
-        rows={5}
-        cols={75}
+        id={`${item.itemId}-item-question`}
+        rows={textAreaRowSize}
+        cols={textAreaColSize}
         onChange={event => setItemState({...itemState, question: event.target.value})}
         value={itemState.question}
         disabled={inputsDisabled}
@@ -57,35 +82,64 @@ const Item = ({ item, payBill }) => {
         item.itemType === 'MCQ'?
         // Displaying MCQ specific properties
         <div>
+          <label htmlFor={`${item.itemId}-item-option1`}>
+            Option 1:
+          </label>
+          <br/>
           <textarea
-            rows={5}
-            cols={75}
+            id={`${item.itemId}-item-option1`}
+            rows={textAreaRowSize}
+            cols={textAreaColSize}
             onChange={event => setItemState({...itemState, option1: event.target.value})}
             value={ itemState.option1 }
             disabled={inputsDisabled}
           />
+          <br/>
+          <label htmlFor={`${item.itemId}-item-option2`}>
+            Option 2:
+          </label>
+          <br/>
           <textarea
-            rows={5}
-            cols={75}
+            id={`${item.itemId}-item-option2`}
+            rows={textAreaRowSize}
+            cols={textAreaColSize}
             onChange={event => setItemState({...itemState, option2: event.target.value})}
             value={ itemState.option2 }
             disabled={inputsDisabled}
           />
+          <br/>
+          <label htmlFor={`${item.itemId}-item-option3`}>
+            Option 3:
+          </label>
+          <br/>
           <textarea
-            rows={5}
-            cols={75}
+            id={`${item.itemId}-item-option3`}
+            rows={textAreaRowSize}
+            cols={textAreaColSize}
             onChange={event => setItemState({...itemState, option3: event.target.value})}
             value={ itemState.option3 }
             disabled={inputsDisabled}
           />
+          <br/>
+          <label htmlFor={`${item.itemId}-item-option4`}>
+            Option 4:
+          </label>
+          <br/>
           <textarea
-            rows={5}
-            cols={75}
+            id={`${item.itemId}-item-option4`}
+            rows={textAreaRowSize}
+            cols={textAreaColSize}
             onChange={event => setItemState({...itemState, option4: event.target.value})}
             value={ itemState.option4 }
             disabled={inputsDisabled}
           />
+          <br/>
+          <label htmlFor={`${item.itemId}-item-answer`}>
+            Answer:
+          </label>
+          <br/>
           <input
+            id={`${item.itemId}-item-answer`}
             type='number'
             min={1} max={4}
             value={ itemState.answer }
@@ -96,16 +150,23 @@ const Item = ({ item, payBill }) => {
         :
         // Displaying True False specific properties
         <div>
-          <input 
-            type='checkbox'
-            checked={ itemState.answer }
-            onChange={event => setItemState({...itemState, answer: event.target.checked})}
-            disabled={inputsDisabled}
-          />
+          <label htmlFor={`${item.itemId}-item-answer`}>
+            Answer:
+            <input
+              className='true-false-answer'
+              id={`${item.itemId}-item-answer`}
+              type='checkbox'
+              checked={ itemState.answer }
+              onChange={event => setItemState({...itemState, answer: event.target.checked})}
+              disabled={inputsDisabled}
+            />
+          </label>
+          <br/>
+          
         </div>
       }
 
-      Course Name: { item.course.name }
+      <div>Course Name: { item.course.name }</div>
 
       {/*
         Submit button that sends a PUT request to the backend to update the Item that has
@@ -113,12 +174,11 @@ const Item = ({ item, payBill }) => {
         But first the update items checkbox must be checked for this button to be rendered
       */}
       {
-        !inputsDisabled?
+        !inputsDisabled &&
         // TODO: ADD ONCLICK EVENT HANDLER HERE
-        <button>
+        <button onClick={() => updateItemLocal(itemState)} className='btn btn-dark'>
           Update Item
         </button>
-        : <></>
       }
       
     </div>
