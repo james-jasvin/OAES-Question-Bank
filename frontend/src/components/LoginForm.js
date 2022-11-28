@@ -21,49 +21,17 @@ const LoginForm = ({ startLogin }) => {
     // Calling startLogin with the provided credentials that will make a call to the backend
     startLogin(credentials)
 
-    // Reset the form state, i.e. the text that's on the username and password text boxes to empty strings
+    // Reset the form state, 
+    // i.e. the text that's on the username and password text boxes to empty strings
     setUsername('')
     setPassword('')
   }
 
-  // Typically keep id attributes on your HTML elements so that they can be styled using CSS
-  // return (
-  //   <form onSubmit={handleLogin} id='login-form'>
-  //     <input 
-  //       type='text'
-  //       placeholder='Username'
-  //       // Note that the text that's displayed on the textbox (value attribute) is controlled by the email state
-  //       value={username}
-  //       // onChange event handler
-  //       // When you type something on the textbox, the onChange event handler will be triggered
-  //       // This event handler as written below, updates the email state with what's being typed by the user
-  //       // Because a state has been updated, the form component will be re-rendered and you can see the updated input
-  //       // on the screen, obviously this happens so fast that you cannot see it but this is the entire procedure
-  //       onChange={event => setUsername(event.target.value)}
-  //       id='username'
-  //       required
-  //     />
-        
-  //     {/* Same as the above username input, except this one has the type password */}
-      // <input
-      //   type='password'
-      //   placeholder='Password'
-      //   value={password}
-      //   onChange={event => setPassword(event.target.value)}
-      //   id='password'
-      //   required
-      // />
-
-  //     {/* Submit button for the form */}
-  //     <button type='submit' id='login-submit'>LOGIN</button>
-  //   </form>
-  // )
-
-  // Styled Form
   return (
     <div className='form-container'>
       <div className='form-box regular-shadow'>
 
+        {/* Render User Icon on top of the Login form */}
         <div className='header-form'>
           <h4 className='text-primary text-center'>
             <i className='fa fa-user-circle' style={{fontSize:'110px', color: 'lightblue'}}></i>
@@ -75,19 +43,16 @@ const LoginForm = ({ startLogin }) => {
           <form onSubmit={handleLogin} id='login-form'>
 
             <div className='input-group mb-3'>
+              {/* Renders User Icon next to username input */}
               <div className='input-group-prepend'>
                 <span className='input-group-text'><i className='fa fa-user'></i></span>
               </div>
+              {/* Username input */}
               <input 
+                className='login-form-input'
                 type='text'
                 placeholder='Username'
-                // Note that the text that's displayed on the textbox (value attribute) is controlled by the email state
                 value={username}
-                // onChange event handler
-                // When you type something on the textbox, the onChange event handler will be triggered
-                // This event handler as written below, updates the email state with what's being typed by the user
-                // Because a state has been updated, the form component will be re-rendered and you can see the updated input
-                // on the screen, obviously this happens so fast that you cannot see it but this is the entire procedure
                 onChange={event => setUsername(event.target.value)}
                 id='username'
                 required
@@ -95,10 +60,13 @@ const LoginForm = ({ startLogin }) => {
             </div>
 
             <div className='input-group mb-3'>
+              {/* Renders password icon next to the input */}
               <div className='input-group-prepend'>
                 <span className='input-group-text'><i className='fa fa-lock'></i></span>
               </div>
+              {/* Password input */}
               <input
+                className='login-form-input'
                 type='password'
                 placeholder='Password'
                 value={password}
@@ -108,6 +76,7 @@ const LoginForm = ({ startLogin }) => {
               />
             </div>
 
+            {/* Submit button for the form */}
             <button type='submit' className='btn btn-primary btn-block' id='login-submit'>LOGIN</button>
           </form>
         </div>

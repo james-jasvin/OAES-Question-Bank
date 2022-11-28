@@ -12,20 +12,22 @@ import Items from './components/Items'
 import ItemForm from './components/ItemForm'
 
 const App = () => {
-  // user state will store the logged in user object, if no login has been done yet then it will be null
+  // User state will store the logged in user object
+  // If no login has been done yet then it will be null
   const [ user, setUser ] = useState(null)
 
   // Will store the items of the logged in user
   const [ items, setItems ] = useState([])
 
+  // Will store the courses that are available in the database
   const [ courses, setCourses ] = useState([])
 
-  // These states are used to control the notifications that show up at the top of the screen for events like 
-  // login, signup, watchlist creation, etc.
+  // These states are used to control the notifications that show up at the top of the screen 
+  // for events like login, signup, item creation, etc.
   const [ notification, setNotification ] = useState(null)
   const [ notificationType, setNotificationType ] = useState(null)
 
-  // Create a notification at the top of the screen with given message for 10 seconds 
+  // Creates a notification at the top of the screen with given message for 10 seconds 
   // Notifications are of two types, "error" and "success"
   // The appearance of these two notifications can be adjusted via the index.css file
   const notificationHandler = (message, type) => {
@@ -43,9 +45,14 @@ const App = () => {
     try {
       const userObject = await loginService.login(credentials)
       setUser(userObject)
+
+      // Cache the user obtained from the user into localStorage so that it can be used
+      // for later logins without the user having to input their login details
       window.localStorage.setItem('loggedInUser', JSON.stringify(userObject))
       
       notificationHandler(`Logged in successfully as ${userObject.name}`, 'success')
+
+      // Set items to empty to clear the data from previous login if there was any
       setItems([])
     }
     catch (exception) {
@@ -53,10 +60,10 @@ const App = () => {
     }
   }
 
-  // Function that creates a new watchlist using the watchlistObject that is passed to the function
+  // Function that creates a new item using the itemObject that is passed to the function
   const createItem = async (itemObject) => {
     try {
-      /* Expected Input Format:
+      /* Expected Input Format by the backend:
       {
         "author": {
           "loginId": "gaurav_tirodkar",
@@ -75,6 +82,7 @@ const App = () => {
 
       const createdItem = await itemService.createItem(authorAddedItemObject)
 
+      // Attach newly created item to the items state
       setItems(items.concat(createdItem))
 
       notificationHandler(`The new item has been added successfully`, 'success')
@@ -88,14 +96,16 @@ const App = () => {
     Function that updates an item using the itemObject that is passed to the function
     by the Item component.
 
-    Returns true when update happens successfully so that the item state of the item
-    being updated can be rendered with the updated values
-    And when update fails, it returns false, in which the item state of the item being updated
-    is reset back to the original values that was fetched from the DB
+    Returns true when update happens successfully.
+    So that the item state of the item being updated can be rendered with the updated values
+    And when update fails, it returns false.
+    In which case the item state of the item being updated is reset back to the original values
+    that was fetched from the DB
   */
   const updateItem = async (itemObject) => {
     try {
       /*
+        Expected Input Format by the backend:
         {
           "author": {
               "loginId": "gaurav_tirodkar",
@@ -125,12 +135,12 @@ const App = () => {
       return false
     }
   }
-
   
-  // Effect Hook that fetches a user's bills
-  // If "user" state changes, then the new bills must be fetched.
-  // This is why "user" is part of the dependency array of this hook
-  // MIGHT HAVE TO CHANGE THIS LATER TO PROMISE CHAINING IF IT FAILS
+  /*
+    Effect Hook that fetches a user's bills
+    If "user" state changes, then the new items must be fetched.
+    This is why "user" is part of the dependency array of this hook
+  */
   useEffect(() => {
       async function fetchItems() {
         if (user) {
@@ -150,9 +160,12 @@ const App = () => {
     fetchCourses()
   }, [])
 
-
-  // Effect Hook that parses the local storage for 'loggedInUser' and sets the "user" state if a valid match is found
-  // This enables user to login automatically without having to type in the credentials. Caching the login if you will.
+  /*
+    Effect Hook that parses the local storage for 'loggedInUser' and sets the "user" 
+    state if a valid match is found.
+    This enables user to login automatically without having to type in the credentials.
+    Caching the login if you will.
+  */
   useEffect(() => {
     const loggedInUser = window.localStorage.getItem('loggedInUser')
     if (loggedInUser)
@@ -164,7 +177,7 @@ const App = () => {
       {/* Header of the page */}
       <div className='text-center page-header p-2 regular-text-shadow regular-shadow'>
           <div className='display-4 font-weight-bold'>
-            OAES
+            OAES - Item Bank
           </div>
       </div>
       
@@ -182,7 +195,6 @@ const App = () => {
         user !== null && 
         <NavBar user={user} setUser={setUser}/>
       } 
-
 
       {
         /* Show Item Form on login that can be used to create an item */

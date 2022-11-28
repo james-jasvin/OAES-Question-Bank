@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-// The API endpoint where login data is sent to
-const loginBaseUrl = `http://localhost:8060/author/login`
+// The API endpoint where login data is sent to, Gateway URL and not authorService URL
+const loginBaseUrl = `http://localhost:8081/author/login`
 
 const login = async (credentials) => {
   // Send the login credential data to the loginBaseUrl API endpoint as an HTTP POST request

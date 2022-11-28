@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 
 /*
-  This component is used for creating a new Watchlist
+  This component is used for creating a new Item
+  - createItem = Method that will create a new Item, defined in App.js
+  - courses = State defined in App.js that contains all the courses fetched from the database
 */
 const ItemForm = ({ createItem, courses }) => {
   // Setting up default empty items for each item type so that its easier to initialize states
@@ -21,18 +23,22 @@ const ItemForm = ({ createItem, courses }) => {
     'answer': true
   }
 
-  
+  // Stores item type independent properties
   const [ item, setItem ] = useState(emptyItem)
 
+  // Stores MCQ specific properties
   const [ mcqItem, setMCQItem ] = useState(emptyMCQItem)
 
+  // Stores True False specific properties
   const [ trueFalseItem, setTrueFalseITem ] = useState(emptyTrueFalseItem)
 
+  // What is the current itemType selected by the User
+  // Currently takes two values MCQ and TrueFalse
   const [ itemType, setItemType ] = useState('MCQ')
 
   /*
     State used for controlling the Select Course dropdown list.
-    It stores the index of a course in the courses list.
+    It stores the index of a course in the courses list/state.
     Initially set to -1, which is used for representing the default "Select a Course" option.
   */
   const [ selectedCourse, setSelectedCourse ] = useState(-1)
@@ -48,7 +54,7 @@ const ItemForm = ({ createItem, courses }) => {
 
     if (itemType === 'MCQ') {
       /*
-        Input Format expected:
+        Input Format expected by createItem() method:
         {
           "item": {
             "question": "Dummy question 7?",
@@ -73,7 +79,7 @@ const ItemForm = ({ createItem, courses }) => {
     }
     else {
       /*
-        Input Format expected:
+        Input Format expected by createItem():
         {
           "item": {
             "question": "Dummy question 6?",
@@ -94,6 +100,7 @@ const ItemForm = ({ createItem, courses }) => {
 
     await createItem(requestItem)
 
+    // Reset all form states to initial values, so that the form is reset
     setItem(emptyItem)
     setItemType('MCQ')
     setMCQItem(emptyMCQItem)
@@ -214,6 +221,7 @@ const ItemForm = ({ createItem, courses }) => {
             </div>
         }
 
+        {/* Drop-down for Selecting Course */}
         <div className='form-group'>
         <label>
           Select Course: <br/>
@@ -233,10 +241,9 @@ const ItemForm = ({ createItem, courses }) => {
         </label>
         </div>
         
-        
-        
+        {/* Submit Button for creating Item */}
         <div>
-          <button className='btn btn-success' type='submit' id='item-submit'>Submit</button>
+          <button className='btn btn-success btn-lg regular-shadow' type='submit' id='item-submit'>Submit</button>
         </div>
         
       </form>

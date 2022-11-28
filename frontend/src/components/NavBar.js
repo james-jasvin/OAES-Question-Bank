@@ -4,12 +4,14 @@ import React from 'react'
   This component is used for rendering the Nav Bar which contains the following,
   - Welcome message for the logged in user
   - Logout Button
-  - In more complex webpages you can include routes here with the help of React-Router
 */
 const NavBar = ({ user, setUser }) => {
-  // If the Logout button has been clicked then clear the loggedInUser object from localStorage and
-  // update "user" state to null, in order to logout, otherwise on the next reload, the Effect hook will again read the user
-  // from the localStorage and relogin without showing the login form
+  /*
+    If the Logout button has been clicked then clear the loggedInUser object from localStorage 
+    and update "user" state to null in order to logout.
+    Otherwise on the next reload, the Effect hook will again read the user from the localStorage
+    and relogin without showing the login form.
+  */
   const logout = () => {
     window.localStorage.removeItem('loggedInUser')
     setUser(null)
@@ -23,7 +25,7 @@ const NavBar = ({ user, setUser }) => {
   return (
     <div className='regular-shadow mb-1'>
       <nav className='navbar navbar-expand-lg navbar-dark' id='menu'>
-        {/* UPDATE user.name PROPERTY IF IT DOESN'T EXIST */}
+        {/* Display welcome message */}
         <button className='navbar-brand btn btn-link border border-light p-2'>Welcome, {user.name}</button>
         
         {/* Bootstrap element for hamburger menu on collapse */}
@@ -35,17 +37,13 @@ const NavBar = ({ user, setUser }) => {
           <span className='navbar-toggler-icon'></span>
         </button>
         
-        {/* This menu will be collapsed under Hamburger Menu if screen size becomes small enough */}
         <div className='collapse navbar-collapse' id='navbarSupportedContent'>
+          {/* Filler UL element that pushes the logout to the right of the NavBar */}
           <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
-              {/* Here you can put a Link of React-Router, not of use right now but helpful for the future */}
-              Home
-            </li>
           </ul>
           
           {/* Logout button */}
-          <div className='inline my-2 my-lg-0'><button className='btn btn-primary' onClick={logout}>Logout</button></div>
+          <div className='inline my-2 my-lg-0'><button className='btn btn-lg btn-primary' onClick={logout}>Logout</button></div>
         </div>
       </nav>
     </div>

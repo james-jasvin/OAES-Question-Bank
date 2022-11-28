@@ -47,27 +47,6 @@ form > button{
   margin-bottom:10px;
 }
 
-/* .tickertape-icon {
-  background: url('assets/tickertape-fi-cropped.jpg');
-  background-size: contain;
-  height: 40px;
-  width: 40px;
-  display: block;
-} */
-
-#search-bar {
-  max-width: 80vw;
-}
-
-#search-results {
-  max-width: 80vw;
-  background: linear-gradient(90deg, #200f8f, #130b44);
-}
-
-#search-results-header {
-  background: rgb(37, 36, 36);
-}
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -91,7 +70,7 @@ code {
 
 .regular-shadow {
 	-webkit-box-shadow: -1px 5px 5px 0px #111;
-	box-shadow: -1px 5px 5px 0px #111;
+	box-shadow: 0px 2px 6px 0px #111;
 }
 
 .regular-text-shadow {
@@ -119,9 +98,23 @@ footer {
 
 .item-details {
   font-size: 20px;
+  background-color: rgb(221, 220, 220);
 }
 
-.input-disabler, .true-false-answer {
+.input-disabler, .true-false-answer, #true-false-item-answer {
   height: 20px;
   width: 40px;
+}
+
+#items {
+  background-color: rgb(241, 238, 238);
+}
+
+#item-form-div {
+  background-color: rgb(241, 238, 238);
+}
+
+.login-form-input {
+  width: 85%;
+  height: 40px;
 }

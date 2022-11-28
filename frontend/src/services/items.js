@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-// The API endpoint where items are located
+// The API endpoint where items are located, Gateway URL and not Microservice URL
 const itemsUrl = `http://localhost:8081/item`
 
 // Gets all items which belong to a user
@@ -18,6 +18,7 @@ const updateItem = async (updateItemJSON) => {
   return response.data
 }
 
+// Creates a new item object in the database
 const createItem = async (item) => {
   const response = await axios.post(`${itemsUrl}`, item)
   return response.data

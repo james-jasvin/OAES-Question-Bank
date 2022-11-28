@@ -42,7 +42,7 @@ const Item = ({ item, updateItem }) => {
     return null; 
 
   return (
-    <div className='m-2 p-3 rounded border item-details'>
+    <div className='m-2 mt-4 p-3 rounded item-details regular-shadow'>
       <div className='form-group'>
         {/*
           This checkbox when ticked will enable all Item elements to be updated
@@ -176,7 +176,7 @@ const Item = ({ item, updateItem }) => {
       {
         !inputsDisabled &&
         // TODO: ADD ONCLICK EVENT HANDLER HERE
-        <button onClick={() => updateItemLocal(itemState)} className='btn btn-dark'>
+        <button onClick={() => updateItemLocal(itemState)} className='btn btn-dark btn-lg'>
           Update Item
         </button>
       }

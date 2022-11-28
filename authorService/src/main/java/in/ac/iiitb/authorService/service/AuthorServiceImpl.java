@@ -53,8 +53,5 @@ public class AuthorServiceImpl implements AuthorService {
             return loggedInAuthor.get();
         else
             return null;
-
-        // Setting items to null to avoid cyclic dependency issues
-        // loggedInAuthor.get().setItems(null);
     }
 }

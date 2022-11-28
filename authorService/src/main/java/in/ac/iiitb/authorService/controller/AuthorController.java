@@ -17,7 +17,6 @@ import in.ac.iiitb.authorService.models.Author;
 import in.ac.iiitb.authorService.service.AuthorService;
 
 @RestController
-@CrossOrigin
 @RequestMapping("author")
 public class AuthorController {
     @Autowired

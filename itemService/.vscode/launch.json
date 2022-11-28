@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-ItemServiceApplication<authorService>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "in.ac.iiitb.itemService.ItemServiceApplication",
+      "projectName": "authorService",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
