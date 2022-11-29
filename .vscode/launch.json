@@ -2,6 +2,13 @@
 	"configurations": [
 		{
 			"type": "java",
+			"name": "Launch ItemServiceApplication",
+			"request": "launch",
+			"mainClass": "in.ac.iiitb.itemService.ItemServiceApplication",
+			"projectName": ""
+		},
+		{
+			"type": "java",
 			"name": "Launch SpringCloudGatewayApplication",
 			"request": "launch",
 			"mainClass": "in.ac.iiitb.scloudgw.SpringCloudGatewayApplication",
